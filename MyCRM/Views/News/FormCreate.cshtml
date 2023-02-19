@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Создать новость";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Создать новость</h1>
+    <div class="card-body">
+        <div class="card">
+            <form method="post" asp-action="Create">
+                <div class="input-group input-group-lg">
+                    <label>Тема: </label>
+                    <input type="text" name="Name">
+                </div>
+                <div class="input-group input-group-lg">
+                    <label>Описание: </label>
+                    <input type="text" name="Description">
+                </div>
+                <div class="input-group input-group-lg">
+                    <input type="submit" class="btn btn-primary">Сохранить
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
