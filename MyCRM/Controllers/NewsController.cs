@@ -23,7 +23,7 @@ namespace MyCRM.Controllers
         public IActionResult Index(PaginationFilter filter)
         {
             if(!filter.HasValues()) filter = new PaginationFilter(db.News.Count());
-            var news = db.News.     OrderByDescending(c => c.CreatedDate).ToQueryString()/*.Where((e, i) => i > (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page)*/;
+            var news = db.News.     OrderByDescending(c => c.CreatedDate)./*.Where((e, i) => i > (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page)*/;
             return View(news);
         }
 
