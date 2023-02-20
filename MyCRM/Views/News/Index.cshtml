@@ -3,23 +3,24 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="">
-    <h1 class="display-4">Новости</h1>
-    <div>
-        <a type="submit" class="btn btn-primary" asp-action="FormCreate">Создать</a>
+    <h1 class="display-4" style="text-align: center">Новости</h1>
+    <div class="align-right">
+        <a type="submit" class="btn btn-primary toRight" asp-action="FormCreate">Создать</a>
     </div>
     <div class="card-body">
         @if (Model.Count>0)
         {
             foreach(var newsitem in Model)
             {
-                <div class="card" style="width: 80%;">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">@newsitem.Name</h5>
-                        <h6 class="card-subtitle mb-1 text-muted">Id новости: @newsitem.Id</h6>
-                        <p class="card-text">@newsitem.Description</p>
-                        <p>Автор: <a href="#" class="card-link">Test</a></p>
+                        <p class="card-text">Id новости: @newsitem.Id</p>
+                        <h6 class="card-title text-white">@newsitem.Description</h6>
+                        <p>Автор: <a href="#" class="text-white">Test</a></p>
                     </div>
                 </div>
+                <br>
             }
         }
         else
@@ -30,3 +31,10 @@
         }
     </div>
 </div>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+</style>

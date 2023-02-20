@@ -2,23 +2,24 @@
     ViewData["Title"] = "Создать новость";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Создать новость</h1>
-    <div class="card-body">
-        <div class="card">
-            <form method="post" asp-action="Create">
-                <div class="input-group input-group-lg">
-                    <label>Тема: </label>
-                    <input type="text" name="Name">
+
+<div class="card-body">
+    <div class="card">
+        <h1 class="display-4 text-center">Создать новость</h1>
+        <form method="post" asp-action="Create" style="margin-left: 15px">
+            <div class="input-group input-group-outline mb-3">
+                <div class="form-row" style="width: 50%">
+                    <label>Тема: <br /></label>
+                    <input class="form-control" name="Name" />
                 </div>
-                <div class="input-group input-group-lg">
-                    <label>Описание: </label>
-                    <input type="text" name="Description">
+            </div>
+            <div class="input-group input-group-outline mb-3">
+                <div class="form-row" style="width: 50%; flex-wrap:wrap !important; word-wrap:break-word !important;">
+                    <label>Описание: <br /></label>
+                    <textarea class="form-control" name="Description"></textarea>
                 </div>
-                <div class="input-group input-group-lg">
-                    <input type="submit" class="btn btn-primary">Сохранить
-                </div>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
 </div>
