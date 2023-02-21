@@ -1,0 +1,75 @@
+﻿@model List<CRMUser>
+@{
+    ViewData["Title"] = "Создать задачу";
+}
+
+
+<div class="card-body">
+    <div class="card">
+        <h1 class="display-4 text-center">Создать новость</h1>
+        <div class="center">
+            <form method="post" style="margin-left: 15px;">
+                <div class="input-group input-group-outline mb-3">
+                    <div class="form-row" style="width: 100%">
+                        <label>Название: <br /></label>
+                        <input class="form-control" name="Name" />
+                    </div>
+                </div>
+                <div class="input-group input-group-outline mb-3">
+                    <div class="form-row" style="width: 100%; flex-wrap:wrap !important; word-wrap:break-word !important;">
+                        <label>Описание: <br /></label>
+                        <textarea class="form-control" name="Description" style="height: 200px"></textarea>
+                    </div>
+                </div>
+                <div class="input-group input-group-outline mb-3">
+                    <label>Исполнитель: <br /></label>
+                    <div class="box card-img-bottom card-img-top">
+                        <select>
+                            @foreach(var user in Model)
+                            {
+                                <option value="@user.Id">@user.UserName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+.center {
+  margin: auto;
+  width: 65%;
+  padding: 10px;
+}
+
+    .box {
+        margin-bottom: 15px;
+        margin-top:15px;
+    }
+
+    .box select {
+            background-color: #344767;
+        color: white;
+        padding: 12px;
+        width: 250px;
+        font-size: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: button;
+        appearance: button;
+        outline: none;
+    }
+
+    .box:hover::before {
+        color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .box select option {
+        padding: 30px;
+    }
+</style>

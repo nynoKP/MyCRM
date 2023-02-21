@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MyCRM.Data;
 using MyCRM.Filters;
 using MyCRM.Models;
+using MyCRM.Repository;
 using System.Linq;
 using System.Security.Claims;
 
@@ -14,19 +15,22 @@ namespace MyCRM.Controllers
     [Authorize]
     public class NewsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
+        private readonly NewsRepository _newsRepository;
+        private readonly UserRepository _userRepository;
 
-        public NewsController(ApplicationDbContext _context)
+        public NewsController(ApplicationDbContext context)
         {
-            this._context = _context;
+            this.context = context;
+            _newsRepository = new NewsRepository(context);
+            _userRepository = new UserRepository(context);
         }
 
         public IActionResult Index(PaginationFilter filter)
         {
             
-            if(!filter.HasValues()) filter = new PaginationFilter(_context.News.Count());
-            List<(string, CRMNews)> values = new List<(string, CRMNews)>();
-            var news = _context.News.Include(v => v.Author).OrderByDescending(c => c.CreatedDate).ToList().Where((e, i) => i >= (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page).ToList();
+            if(!filter.HasValues()) filter = new PaginationFilter(_newsRepository.Count());
+            var news = _newsRepository.GetAll(filter);
             return View(news);
         }
 
@@ -38,13 +42,12 @@ namespace MyCRM.Controllers
         public async Task<IActionResult> Create([FromForm] CRMNews news)
         {
             news.CreatedDate = DateTime.Now;
-            news.Author = _context.Users.Where(c=>c.Id == GetUserId()).First();
-            _context.News.Add(news);
-            _context.SaveChanges();
+            news.Author = _userRepository.GetById(GetUserId());
+            _newsRepository.Add(news);
+            _newsRepository.Save();
             return RedirectToAction("Index");
         }
 
-        private string GetUserId()
-            => this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }
