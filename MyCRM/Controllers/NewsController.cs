@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,24 +7,26 @@ using MyCRM.Data;
 using MyCRM.Filters;
 using MyCRM.Models;
 using System.Linq;
+using System.Security.Claims;
 
 namespace MyCRM.Controllers
 {
+    [Authorize]
     public class NewsController : Controller
     {
-        private readonly ApplicationDbContext db;
-        private readonly UserManager<CRMUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public NewsController(ApplicationDbContext _context, UserManager<CRMUser> userManager)
+        public NewsController(ApplicationDbContext _context)
         {
-            db = _context;
-            _userManager = userManager;
+            this._context = _context;
         }
 
         public IActionResult Index(PaginationFilter filter)
         {
-            if(!filter.HasValues()) filter = new PaginationFilter(db.News.Count());
-            var news = db.News.     OrderByDescending(c => c.CreatedDate)./*.Where((e, i) => i > (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page)*/;
+            
+            if(!filter.HasValues()) filter = new PaginationFilter(_context.News.Count());
+            List<(string, CRMNews)> values = new List<(string, CRMNews)>();
+            var news = _context.News.Include(v => v.Author).OrderByDescending(c => c.CreatedDate).ToList().Where((e, i) => i >= (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page).ToList();
             return View(news);
         }
 
@@ -32,13 +35,16 @@ namespace MyCRM.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create([FromForm] News news)
+        public async Task<IActionResult> Create([FromForm] CRMNews news)
         {
             news.CreatedDate = DateTime.Now;
-            news.Author = db.CRMUser.Where(c => c.UserName == HttpContext.User.Identity.Name).First();
-            db.News.Add(news);
-            db.SaveChanges();
+            news.Author = _context.Users.Where(c=>c.Id == GetUserId()).First();
+            _context.News.Add(news);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        private string GetUserId()
+            => this.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }
