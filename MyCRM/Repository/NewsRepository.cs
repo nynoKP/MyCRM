@@ -10,19 +10,19 @@ namespace MyCRM.Repository
         private readonly ApplicationDbContext context;
         public NewsRepository(ApplicationDbContext context) => this.context = context;
 
-        public CRMNews GetById(int Id)
+        public News GetById(int Id)
         {
             return context.News.First(c => c.Id == Id);
         }
 
-        public List<CRMNews> GetByCreator(string AuthorId)
+        public List<News> GetByCreator(string AuthorId)
         {
             return context.News.Include(c=>c.Author)
                 .Where(c=>c.Author.Id == AuthorId)
                 .OrderByDescending(c=>c.CreatedDate)
                 .ToList();
         }
-        public List<CRMNews> GetAll(PaginationFilter filter)
+        public List<News> GetAll(PaginationFilter filter)
         {
             return context.News.Include(c => c.Author)
                 .OrderByDescending(c => c.CreatedDate)
@@ -31,7 +31,7 @@ namespace MyCRM.Repository
                 .ToList();
         }
 
-        public void Add(CRMNews crmNews) => context.News.Add(crmNews);
+        public void Add(News crmNews) => context.News.Add(crmNews);
 
         public int Count()
         {

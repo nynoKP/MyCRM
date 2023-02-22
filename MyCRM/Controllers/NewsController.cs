@@ -39,7 +39,7 @@ namespace MyCRM.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create([FromForm] CRMNews news)
+        public async Task<IActionResult> Create([FromForm] News news)
         {
             news.CreatedDate = DateTime.Now;
             news.Author = _userRepository.GetById(GetUserId());

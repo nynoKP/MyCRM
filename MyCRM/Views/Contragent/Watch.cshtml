@@ -1,0 +1,68 @@
+﻿@model Contragent
+<section class="content">
+    <div class="container-fluid">
+        <h3>Создание Клиента</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th><label class="form-label">Наименование:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" name="Name" value="@Model.Name"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Описание:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" name="Description" value="@Model.Description"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Контакт:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" name="Phone" value="@Model.Phone"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Пинфл:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" name="Pin" value="@Model.Pin"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Инн:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" name="Inn" value="@Model.Inn"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Email:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="email" class="form-control" name="Email" value="@Model.Email"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Адрес:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" id="Address" name="Address" value="@Model.Address"></div><div id="map"></div></td>
+
+                    </tr>
+                </table>
+                <style>
+                    #map {
+                        width: 100%;
+                        height: 20rem;
+                    }
+                </style>
+                <div style="width: 10%; margin-left: 20px">
+                    <a class="btn bg-gradient-danger w-100 toast-btn" asp-action="Index">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3fad1fab-49f9-47b1-ac78-90203a05b988" ></script>
+<script>
+
+ymaps.ready(init);
+function init(){
+
+var myMap;
+ymaps.geocode($('#Address').val()).then(function (res) {
+myMap = new ymaps.Map('map', {
+center: res.geoObjects.get(0).geometry.getCoordinates(),
+zoom : 15
+});
+myMap.geoObjects.add(res.geoObjects.get(0));
+});
+}
+</script>

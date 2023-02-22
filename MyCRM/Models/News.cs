@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyCRM.Models
 {
-    public class CRMNews
+    public class News
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

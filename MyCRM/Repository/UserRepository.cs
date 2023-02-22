@@ -17,5 +17,6 @@ namespace MyCRM.Repository
         {
             return context.Users.Where(c=>c.Id == Id).First();
         }
+        public void Save() => context.SaveChanges();
     }
 }

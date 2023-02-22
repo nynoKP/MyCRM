@@ -14,6 +14,8 @@
             this.pageSize = pageSize;
         }
 
+        public int PageCount => (int)Math.Ceiling((decimal)total / pageSize);
+
         public bool HasValues() => total != 0;
     }
 }

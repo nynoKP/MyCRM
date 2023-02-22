@@ -1,6 +1,6 @@
 ﻿namespace MyCRM.Models
 {
-    public class CRMTask
+    public class Tasks
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -7,6 +7,6 @@ namespace MyCRM.Repository
         private readonly ApplicationDbContext context;
         public TaskRepository(ApplicationDbContext context) => this.context = context;
 
-        
+        public void Save() => context.SaveChanges();
     }
 }
