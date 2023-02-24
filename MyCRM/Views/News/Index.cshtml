@@ -1,36 +1,64 @@
-﻿@model List<News>
+﻿@using MyCRM.ViewModels;
+@model NewsViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Главная";
 }
-<div class="">
-    <h1 class="display-4" style="text-align: center">Новости</h1>
-    <div class="align-right">
-        <a type="submit" class="btn btn-primary toRight" asp-action="FormCreate">Создать</a>
-    </div>
-    <div class="card-body">
-        @if (Model.Count>0)
-        {
-            foreach(var newsitem in Model)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@newsitem.Name</h5>
-                        <p class="card-text">Id новости: @newsitem.Id</p>
-                        <h6 class="card-title text-white">@newsitem.Description</h6>
-                        <p>Автор: <a href="#" class="text-white">@newsitem.Author.UserName</a></p>
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Новости</h1>
+        <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 25px">
+                    <a type="submit" class="btn btn-primary toRight" asp-action="FormCreate">Создать</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.News.Count>0)
+                    {
+                        foreach(var newsitem in Model.News)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@newsitem.Name</h5>
+                                    <p class="card-text">Id новости: @newsitem.Id</p>
+                                    <h6 class="card-title text-white">@newsitem.Description</h6>
+                                    <p>Автор: <a href="#" class="text-white">@newsitem.Author.UserName</a></p>
+                                </div>
+                            </div>
+                            <br>
+                        }
+                    }
+                    else
+                    {
+                        <div class="card" style="margin: 25px">
+                            <h5 class="display-4">Нет новостей</h5>
+                        </div>
+                    }
+                </div>
+                <div class="align-right">
+
+                    <div class="pagination" style="margin-top: 25px">
+                        <a asp-controller="News" asp-action="Index" asp-route-page="1">&laquo;</a>
+                        @for (int i = Model.PaginationFilter.page - 2; i <= Model.PaginationFilter.page + 2; i++)
+                        {
+                            if (i > 0 && i <= Model.PaginationFilter.PageCount)
+                            {
+                                if (i != Model.PaginationFilter.page)
+                                {
+                                    <a asp-controller="News" asp-action="Index" asp-route-page="@(i)">@(i)</a>
+                                }
+                                else
+                                {
+                                    <a class="active">@(i)</a>
+                                }
+                            }
+                        }
+                        <a asp-controller="News" asp-action="Index" asp-route-page="@Model.PaginationFilter.PageCount">&raquo;</a>
                     </div>
                 </div>
-                <br>
-            }
-        }
-        else
-        {
-            <div class="card">
-                <h2 class="display-2">Нет новостей</h2>
             </div>
-        }
+        </div>
     </div>
-</div>
+</section>
 
 <style>
     .align-right {

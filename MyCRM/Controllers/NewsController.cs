@@ -7,6 +7,7 @@ using MyCRM.Data;
 using MyCRM.Filters;
 using MyCRM.Models;
 using MyCRM.Repository;
+using MyCRM.ViewModels;
 using System.Linq;
 using System.Security.Claims;
 
@@ -26,12 +27,15 @@ namespace MyCRM.Controllers
             _userRepository = new UserRepository(context);
         }
 
-        public IActionResult Index(PaginationFilter filter)
+        public IActionResult Index(int page)
         {
-            
-            if(!filter.HasValues()) filter = new PaginationFilter(_newsRepository.Count());
-            var news = _newsRepository.GetAll(filter);
-            return View(news);
+            var filter = new PaginationFilter(_newsRepository.Count(), page);
+            var viewModel = new NewsViewModel()
+            {
+                PaginationFilter = filter,
+                News = _newsRepository.GetAll(filter)
+            };
+            return View(viewModel);
         }
 
         public IActionResult FormCreate()

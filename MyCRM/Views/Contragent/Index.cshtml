@@ -7,12 +7,10 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="display-3">
-            <h3>Контрагенты</h3>
-        </div>
+        <h1 class="display-4" style="text-align: center">Контрагенты</h1>
         <div class="card">
             <div class="card-body">
-                <div>
+                <div style="margin-bottom: 25px">
                     <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
                 </div>
                 <div class="table-responsive">
@@ -80,31 +78,4 @@
     }
 </style>
 
-@*Pagination styles*@
-<style>
-    .pagination {
-        display: inline-block;
-    }
-
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-            .pagination a.active {
-                background-color: #e91e63;
-                color: #e91e63;
-                border-radius: 5px;
-            }
-
-            .pagination a:hover:not(.active) {
-                background-color: #e91e63;
-                border-radius: 5px;
-            }
-    .td{
-        white-space:normal !important;
-    }
-</style>
 

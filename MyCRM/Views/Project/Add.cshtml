@@ -1,9 +1,10 @@
 ﻿@using MyCRM.ViewModels;
 @model ProjectCreateViewModel
-
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <section class="content">
     <div class="container-fluid">
-        <h3>Создание Клиента</h3>
+        <h3>Создание Проекта</h3>
 
         <div class="card">
             <div class="card-body">
@@ -21,57 +22,39 @@
                         <tr>
                             <th><label class="form-label">Заказчик:</label></th>
                             <td>
-                                <div class="chosen-wrapper" data-js="custom-scroll">
-                                    <select class="chosen-select" data-placeholder="Lorem ipsum dolor sit amet">
-                                        <option></option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                    </select>
-                                </div>
-                             </td>
+                                <select class="searchDropDown" style="width:300px" name="customerId">
+                                    <option></option>
+                                    @foreach(var contragent in Model.Contragents)
+                                    {
+                                        <option value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown').select2({
+                                            placeholder: 'Выберите контрагента'
+                                        });
+                                    });
+                                </script>
+                            </td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Ответственный:</label></th>
                             <td>
-                                <div class="chosen-wrapper" data-js="custom-scroll">
-                                    <select class="chosen-select" data-placeholder="Lorem ipsum dolor sit amet">
-                                        <option></option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                        <option>Consectetur adipiscing</option>
-                                        <option>Sed do eiusmod tempor</option>
-                                        <option>Incididunt ut labore</option>
-                                        <option>Voluptatem accusantium</option>
-                                        <option>Duis aute irure dolor </option>
-                                        <option>Nemo enim</option>
-                                    </select>
-                                </div>
+                                <select class="searchDropDown2" style="width:300px" name="userId">
+                                    <option></option>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        <option value="@user.Id">@user.UserName</option>
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown2').select2({
+                                            placeholder: 'Выберите ответственного'
+                                        });
+                                    });
+                                </script>
                             </td>
                         </tr>
                     </table>
@@ -88,6 +71,3 @@
         </div>
     </div>
 </section>
-
-<link href="~/customDropDown/DropDownWithSearch.css" rel="stylesheet" />
-<script src="~/customDropDown/DropDownWithSearch.js"></script>
