@@ -6,5 +6,6 @@ namespace MyCRM.ViewModels
     {
         public IEnumerable<CRMUser> Users { get; set; }
         public IEnumerable<Contragent> Contragents { get; set; }
+        public Project EditProject { get; set; }
     }
 }

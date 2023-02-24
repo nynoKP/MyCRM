@@ -27,7 +27,7 @@ namespace MyCRM.Controllers
             _userRepository = new UserRepository(context);
         }
 
-        public IActionResult Index(int page)
+        public IActionResult Index(int page = 1)
         {
             var filter = new PaginationFilter(_newsRepository.Count(), page);
             var viewModel = new NewsViewModel()

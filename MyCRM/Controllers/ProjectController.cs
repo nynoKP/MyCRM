@@ -50,12 +50,20 @@ namespace MyCRM.Controllers
 
         public IActionResult Edit(int id)
         {
-            var project = projectRepository.GetById(id);
-            return View(project);
+            var viewModel = new ProjectCreateViewModel()
+            {
+                Contragents = contragentRepository.GetAllWithoutPagination(),
+                Users = userRepository.GetAll(),
+                EditProject = projectRepository.GetById(id)
+            };
+            return View(viewModel);
         }
 
-        public IActionResult Update(Project project)
+        public IActionResult Update(Project project,string userId, int customerId)
         {
+            project.Creator = projectRepository.GetById(project.Id).Creator;
+            project.Responsible = userRepository.GetById(userId);
+            project.Customer = contragentRepository.GetById(customerId);
             projectRepository.Update(project);
             projectRepository.Save();
             return RedirectToAction("Index");
