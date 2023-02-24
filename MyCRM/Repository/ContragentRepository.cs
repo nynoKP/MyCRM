@@ -17,10 +17,16 @@ namespace MyCRM.Repository
                 .Where((e, i) => i >= (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page)
                 .ToList();
         }
-
+        public List<Contragent> GetAllWithoutPagination()
+        {
+            return context.Contragent.Include(c => c.Creator)
+                .ToList();
+        }
         public Contragent GetById(int id)
         {
-            return context.Contragent.Where(c=>c.Id == id).First();
+            return context.Contragent.Include(c => c.Creator)
+                .Where(c=>c.Id == id)
+                .First();
         }
 
         public int Count() => context.Contragent.Count();

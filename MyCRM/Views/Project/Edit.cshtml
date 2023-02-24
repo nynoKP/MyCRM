@@ -1,0 +1,132 @@
+﻿@model Contragent
+<section class="content">
+    <div class="container-fluid">
+        <h3>Создание Клиента</h3>
+
+        <div class="card">
+            <div class="card-body">
+
+                <form role="form" class="text-start" method="post" asp-action="Update">
+                    <input type="hidden" class="form-control" name="Id" value="@Model.Id">
+                    <table class="table table-striped">
+                        <tr>
+                            <th><label class="form-label">Наименование:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Name" value="@Model.Name"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Описание:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description" value="@Model.Description"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Контакт:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Phone" value="@Model.Phone"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Пинфл:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Pin" value="@Model.Pin"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Инн:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Inn" value="@Model.Inn"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Email:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="email" class="form-control" name="Email" value="@Model.Email"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Адрес:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" id="Address" name="Address" value="@Model.Address"></div><div id="map"></div></td>
+
+                        </tr>
+                    </table>
+                    <style>
+                        #map {
+                            width: 100%;
+                            height: 20rem;
+                        }
+                    </style>
+
+
+
+                    <div style="display: flex;">
+                        <div style="width: 10%;">
+                            <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
+                        </div>
+                        <div style="width: 10%; margin-left: 20px">
+                            <button class="btn bg-gradient-danger w-100 toast-btn" asp-action="Index">Отмена</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3fad1fab-49f9-47b1-ac78-90203a05b988"></script>
+<script>
+
+    ymaps.ready(init);
+
+    function init() {
+        var myPlacemark,
+            myMap = new ymaps.Map('map', {
+                center: [41.2646500, 69.2162700],
+                zoom: 15
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+
+        // Слушаем клик на карте.
+        myMap.events.add('click', function (e) {
+            var coords = e.get('coords');
+
+            // Если метка уже создана – просто передвигаем ее.
+            if (myPlacemark) {
+                myPlacemark.geometry.setCoordinates(coords);
+            }
+            // Если нет – создаем.
+            else {
+                myPlacemark = createPlacemark(coords);
+                myMap.geoObjects.add(myPlacemark);
+                // Слушаем событие окончания перетаскивания на метке.
+                myPlacemark.events.add('dragend', function () {
+                    getAddress(myPlacemark.geometry.getCoordinates());
+                });
+            }
+            getAddress(coords);
+        });
+
+        // Создание метки.
+        function createPlacemark(coords) {
+            return new ymaps.Placemark(coords, {
+                iconCaption: 'поиск...'
+            }, {
+                preset: 'islands#violetDotIconWithCaption',
+                draggable: true
+            });
+        }
+
+        // Определяем адрес по координатам (обратное геокодирование).
+        function getAddress(coords) {
+            myPlacemark.properties.set('iconCaption', 'поиск...');
+            ymaps.geocode(coords).then(function (res) {
+                var firstGeoObject = res.geoObjects.get(0);
+
+                myPlacemark.properties
+                    .set({
+                        // Формируем строку с данными об объекте.
+                        iconCaption: [
+                            // Название населенного пункта или вышестоящее административно-территориальное образование.
+                            firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                            // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+                            firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                        ].filter(Boolean).join(', '),
+                        // В качестве контента балуна задаем строку с адресом объекта.
+                        balloonContent: firstGeoObject.getAddressLine()
+
+                    });
+                $("#Address").val(firstGeoObject.getAddressLine())
+            });
+        }
+    }
+</script>

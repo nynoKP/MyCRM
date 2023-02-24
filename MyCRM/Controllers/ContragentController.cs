@@ -50,6 +50,7 @@ namespace MyCRM.Controllers
 
         public IActionResult Update(Contragent contragent)
         {
+            contragent.Creator = contragentRepository.GetById(contragent.Id).Creator;
             contragentRepository.Update(contragent);
             contragentRepository.Save();
             return RedirectToAction("Index");

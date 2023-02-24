@@ -14,6 +14,7 @@ namespace MyCRM.Data
         public DbSet<News> News { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Contragent> Contragent { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

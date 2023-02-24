@@ -1,0 +1,40 @@
+﻿@model Project
+<section class="content">
+    <div class="container-fluid">
+        <h3>Создание Проекта</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th><label class="form-label">Наименование:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Name"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Описание:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Description"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Создатель:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Creator.UserName"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Ответсвтенный:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Responsible"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Заказчик:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Customer.Name"></div></td>
+                </table>
+                <div style="display: flex;">
+                    <div style="width: 10%;">
+                        <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                    </div>
+                    <div style="width: 10%; margin-left: 20px">
+                        <a class="btn bg-gradient-danger w-100 toast-btn" asp-action="Index">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

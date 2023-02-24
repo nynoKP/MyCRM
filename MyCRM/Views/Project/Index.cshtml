@@ -1,8 +1,8 @@
 ﻿@using MyCRM.ViewModels;
-@model ContragentViewModel
+@model ProjectViewModel
 
 @{
-    ViewData["Title"] = "Контрагенты";
+    ViewData["Title"] = "Проекты";
 }
 
 <section class="content">
@@ -21,26 +21,24 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Название</th>
-                                <th scope="col">Inn</th>
-                                <th scope="col">Адрес</th>
+                                <th scope="col">Заказчик</th>
                                 <th scope="col">Описание</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Контакт</th>
+                                <th scope="col">Создатель</th>
+                                <th scope="col">Ответственный</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Contragents != null && Model.Contragents.Any())
-                                foreach (var item in Model.Contragents)
+                            @if (Model.Projects != null && Model.Projects.Any())
+                                foreach (var item in Model.Projects)
                                 {
                                     <tr>
                                         <th>@item.Id</th>
                                         <th class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></th>
-                                        <th>@item.Inn</th>
-                                        <th style="white-space: normal !important;word-wrap: break-word !important;">@item.Address</th>
+                                        <th style="white-space: normal !important;word-wrap: break-word !important;">@item.Customer</th>
                                         <th style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</th>
-                                        <th>@item.Email</th>
-                                        <th>@item.Phone</th>
+                                        <th>@item.Creator.UserName</th>
+                                        <th>@item.Responsible.UserName</th>
                                         <th><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></th>
                                     </tr>
                                 }
@@ -50,14 +48,14 @@
                 <div class="align-right">
 
                     <div class="pagination" style="margin-top: 25px">
-                        <a asp-controller="Contragent" asp-action="Index" asp-route-page="1">&laquo;</a>
+                        <a asp-controller="Project" asp-action="Index" asp-route-page="1">&laquo;</a>
                         @for (int i = Model.PaginationFilter.page - 2; i <= Model.PaginationFilter.page + 2; i++)
                         {
                             if (i > 0 && i <= Model.PaginationFilter.PageCount)
                             {
                                 if (i != Model.PaginationFilter.page)
                                 {
-                                    <a asp-controller="Contragent" asp-action="Index" asp-route-page="@(i)">@(i)</a>
+                                    <a asp-controller="Project" asp-action="Index" asp-route-page="@(i)">@(i)</a>
                                 }
                                 else
                                 {
@@ -65,7 +63,7 @@
                                 }
                             }
                         }
-                        <a asp-controller="Contragent" asp-action="Index" asp-route-page="@Model.PaginationFilter.PageCount">&raquo;</a>
+                        <a asp-controller="Project" asp-action="Index" asp-route-page="@Model.PaginationFilter.PageCount">&raquo;</a>
                     </div>
                 </div>
             </div>
