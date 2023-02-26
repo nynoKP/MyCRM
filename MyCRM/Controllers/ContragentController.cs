@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
 using MyCRM.Models;
@@ -8,16 +9,14 @@ using System.Security.Claims;
 
 namespace MyCRM.Controllers
 {
+    [Authorize]
     public class ContragentController : Controller
     {
-        
-        private readonly ApplicationDbContext context;
         private readonly ContragentRepository contragentRepository;
         private readonly UserRepository userRepository;
 
         public ContragentController(ApplicationDbContext context)
         {
-            this.context = context;
             contragentRepository = new ContragentRepository(context);
             userRepository = new UserRepository(context);
         }
@@ -48,10 +47,9 @@ namespace MyCRM.Controllers
             return View(contragent);
         }
 
-        public IActionResult Update(Contragent contragent)
+        public IActionResult Update(Contragent contragent,string creatorId)
         {
-            var contragentDB = contragentRepository.GetById(contragent.Id);
-            contragent.Creator = contragentDB.Creator;
+            contragent.Creator = userRepository.GetById(creatorId);
             contragentRepository.Update(contragent);
             contragentRepository.Save();
             return RedirectToAction("Index");

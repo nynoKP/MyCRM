@@ -9,6 +9,7 @@
         public DateTime Deadline { get; set; }
         public CRMUser Author { get; set; }
         public CRMUser Executor { get; set; }
+        public Project Project { get; set; }
         public TaskStatus Status { get; set; }
     }
 

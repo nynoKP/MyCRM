@@ -1,0 +1,45 @@
+﻿
+@model CRMUser
+<section class="content">
+    <div class="container-fluid">
+        <h3>Редактирование профиля</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <form role="form" class="text-start" method="post" asp-action="Update">
+                    <input type="text" hidden class="form-control" name="Id" value="@Model.Id">
+                    <table class="table table-striped">
+                        <tr>
+                            <th><label class="form-label">Фамилия:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="LastName" value="@Model.LastName"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Имя:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="FirstName" value="@Model.FirstName"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Отчество:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Patronymic" value="@Model.Patronymic"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Email:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Email" value="@Model.Email"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Номер телефона:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber"></div></td>
+                        </tr>
+                    </table>
+                    <div style="display: flex;">
+                        <div style="width: 10%;">
+                            <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
+                        </div>
+                        <div style="width: 10%; margin-left: 20px">
+                            <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

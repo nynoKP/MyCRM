@@ -1,0 +1,41 @@
+﻿@model CRMUser
+<section class="content">
+    <div class="container-fluid">
+        <h3>Просмотр профиля</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th><label class="form-label">Фамилия:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.LastName"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Имя:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.FirstName"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Отчество:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Patronymic"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Email:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Email"></div></td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Номер телефона:</label></th>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.PhoneNumber"></div></td>
+                    </tr>
+                </table>
+                <div style="display: flex;">
+                    <div style="width: 10%;">
+                        <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                    </div>
+                    <div style="width: 10%; margin-left: 20px">
+                        <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

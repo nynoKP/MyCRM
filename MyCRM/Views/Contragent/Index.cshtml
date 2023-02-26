@@ -33,13 +33,13 @@
                                 {
                                     <tr>
                                         <th>@item.Id</th>
-                                        <th class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></th>
-                                        <th>@item.Inn</th>
-                                        <th style="white-space: normal !important;word-wrap: break-word !important;">@item.Address</th>
-                                        <th style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</th>
-                                        <th>@item.Email</th>
-                                        <th>@item.Phone</th>
-                                        <th><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></th>
+                                        <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
+                                        <td>@item.Inn</td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Address</td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
                                     </tr>
                                 }
                         </tbody>

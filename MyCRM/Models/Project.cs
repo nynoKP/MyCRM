@@ -12,6 +12,7 @@ namespace MyCRM.Models
         public string? Description { get; set; }
         public CRMUser Creator { get; set; }
         public CRMUser? Responsible { get; set; }
+        [Required]
         public Contragent? Customer { get; set; }
     }
 }

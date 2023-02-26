@@ -34,10 +34,10 @@
                                     <tr>
                                         <th>@item.Id</th>
                                         <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
-                                        <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Customer.Name</td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;"><a asp-controller="Contragent" asp-action="Watch" asp-route-id="@item.Customer.Id">@item.Customer.Name</a></td>
                                         <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
-                                        <td>@item.Creator.UserName</td>
-                                        <td>@item.Responsible.UserName</td>
+                                        <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Creator.Id">@item.Creator.GetShortName()</a></td>
+                                        <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Responsible.Id">@item.Responsible.GetShortName()</a></td>
                                         <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
                                     </tr>
                                 }

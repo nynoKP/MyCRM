@@ -21,22 +21,40 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                                 <div class="input-group input-group-outline mb-3">
                                     <div class="form-row" style="width: 100%">
+                                        <label>Имя: <br /></label>
+                                        <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="Имя" />
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-outline mb-3">
+                                    <div class="form-row" style="width: 100%">
+                                        <label>Фамилия: <br /></label>
+                                        <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Фамилия" />
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-outline mb-3">
+                                    <div class="form-row" style="width: 100%">
+                                        <label>Отчество: <br /></label>
+                                        <input asp-for="Input.Patronymic" class="form-control" autocomplete="patronymic" aria-required="true" placeholder="Отчество" />
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-outline mb-3">
+                                    <div class="form-row" style="width: 100%">
                                         <label>Почта: <br /></label>
-                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Почта (example@test.com)" />
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="input-group input-group-outline mb-3">
                                     <div class="form-row" style="width: 100%">
                                         <label>Пароль: <br /></label>
-                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Пароль" />
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="input-group input-group-outline mb-3">
                                     <div class="form-row" style="width: 100%">
                                         <label>Подтверждение: <br /></label>
-                                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Подтверждение" />
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>

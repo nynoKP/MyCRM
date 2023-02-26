@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
 using MyCRM.Models;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace MyCRM.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -59,9 +61,9 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Update(Project project,string userId, int customerId)
+        public IActionResult Update(Project project,string userId, int customerId, string creatorId)
         {
-            project.Creator = projectRepository.GetById(project.Id).Creator;
+            project.Creator = userRepository.GetById(creatorId);
             project.Responsible = userRepository.GetById(userId);
             project.Customer = contragentRepository.GetById(customerId);
             projectRepository.Update(project);
