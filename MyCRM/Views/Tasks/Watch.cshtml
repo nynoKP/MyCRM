@@ -1,1 +1,102 @@
-﻿
+﻿@using MyCRM.ViewModels;
+@model Tasks
+
+@{
+    ViewData["Title"] = "Просмотр задачи";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-dark" style="margin-top: 25px">
+            <div class="card-header">
+                <h3 class="card-title">Создание задачи</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped">
+                    <tr>
+                        <th><label class="form-label">Наименование:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="text" readonly class="form-control" name="Name" value="@Model.Name">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Описание:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="text" readonly class="form-control" name="Description" value="@Model.Description">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Дата создания:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="date" readonly class="form-control" name="CreatedDate" value="@Model.CreatedDate">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Дата завершения:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="date" readonly class="form-control" name="Deadline" value="@Model.Deadline">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Проект:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <a asp-controller="Project" asp-action="Watch" asp-route-id="@Model.Project.Id">
+                                    @Model.Project.Name
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Создатель:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@Model.Author.Id">
+                                    @Model.Author.GetShortName()
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Ответственный:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@Model.Executor.Id">
+                                    @Model.Executor.GetShortName()
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="form-label">Статус:</label></th>
+                        <td>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="text" readonly class="form-control" name="Status" value="@Model.Status">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="display: flex;">
+                        
+                    <div style="width: 10%; margin-left: 20px">
+                        <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
