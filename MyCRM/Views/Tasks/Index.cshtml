@@ -2,13 +2,13 @@
 @model TaskViewModel
 
 @{
-    ViewData["Title"] = "Проекты";
+    ViewData["Title"] = "Задачи";
 }
 <link href="~/css/select2.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <section class="content">
     <div class="container-fluid">
-        <h1 class="display-4" style="text-align: center">Проекты</h1>
+        <h1 class="display-4" style="text-align: center">Задачи</h1>
         <br>
         <form method="post" asp-action="Index">
             <div class="card">
@@ -142,18 +142,21 @@
 <script>
     $(document).ready(function () {
         $('.userDropDown').select2({
+            allowClear: true,
             placeholder: 'Пользователь'
         });
         $('.projectDropDown').select2({
+            allowClear: true,
             placeholder: 'Проект'
         });
         $('.customerDropDown').select2({
+            allowClear: true,
             placeholder: 'Заказчик'
         });
     });
 
 function setPageAnd(page){
-    $('#Page').value(page);
+    $('#Page').val(page);
     $('#submitButton').click();
 }
 </script>

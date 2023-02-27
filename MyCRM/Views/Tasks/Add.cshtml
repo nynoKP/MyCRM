@@ -1,5 +1,9 @@
 ﻿@using MyCRM.ViewModels;
-@model ProjectCreateViewModel
+@model TaskViewModel
+
+@{
+    ViewData["Title"] = "Задачи";
+}
 <link href="~/css/select2.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <section class="content">
@@ -19,26 +23,30 @@
                     <table class="table table-striped">
                         <tr>
                             <th><label class="form-label">Наименование:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Name"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Task.Name"></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Описание:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Task.Description"></div></td>
                         </tr>
                         <tr>
-                            <th><label class="form-label">Заказчик:</label></th>
+                            <th><label class="form-label">Дата завершения:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="date" class="form-control" name="Task.Deadline"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Проект:</label></th>
                             <td>
-                                <select class="searchDropDown" style="width:300px" name="customerId">
-                                    <option></option>
-                                    @foreach(var contragent in Model.Contragents)
+                                <select class="searchDropDown" style="width:300px" name="projectId">
+                                    <option value=""></option>
+                                    @foreach (var project in Model.AllProjects)
                                     {
-                                        <option value="@contragent.Id">@contragent.Name</option>
+                                        <option value="@project.Id">@project.Name</option>
                                     }
                                 </select>
                                 <script>
                                     $(document).ready(function () {
                                         $('.searchDropDown').select2({
-                                            placeholder: 'Выберите контрагента'
+                                            placeholder: 'Выберите проект'
                                         });
                                     });
                                 </script>
@@ -47,9 +55,9 @@
                         <tr>
                             <th><label class="form-label">Ответственный:</label></th>
                             <td>
-                                <select class="searchDropDown2" style="width:300px" name="userId">
+                                <select class="searchDropDown2" style="width:300px" name="executorId">
                                     <option></option>
-                                    @foreach (var user in Model.Users)
+                                    @foreach (var user in Model.AllUsers)
                                     {
                                         <option value="@user.Id">@user.UserName</option>
                                     }

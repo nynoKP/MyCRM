@@ -12,7 +12,8 @@ namespace MyCRM.Repository
 
         public News GetById(int Id)
         {
-            return context.News.First(c => c.Id == Id);
+            return context.News.Include(c=>c.Author)
+                .First(c => c.Id == Id);
         }
 
         public List<News> GetByCreator(string AuthorId)
@@ -36,6 +37,11 @@ namespace MyCRM.Repository
         public int Count()
         {
             return context.News.Count();
+        }
+
+        public void Update(News crmNews)
+        {
+            context.News.Update(crmNews);
         }
 
         public void Save() => context.SaveChanges();

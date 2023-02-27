@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
+using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
+using System.Security.Claims;
 
 namespace MyCRM.Controllers
 {
@@ -38,14 +40,45 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
-        public IActionResult CreateTaskForm()
+        public IActionResult Create([FromForm] TaskViewModel model)
         {
-            return View(_userRepository.GetAll());
+            model.Task.Author = _userRepository.GetById(GetUserId());
+            model.Task.Executor = _userRepository.GetById(model.executorId);
+            model.Task.Project = _projectRepository.GetById(model.projectId);
+            model.Task.CreatedDate = DateTime.Now;
+            model.Task.Status = Models.TaskStatus.New;
+            _taskRepository.Add(model.Task);
+            _taskRepository.Save();
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Create([FromForm] PaginationFilter filter, string executorId)
+        public IActionResult Watch(int id)
         {
-            return View();
+            var task = _taskRepository.GetById(id);
+            return View(task);
         }
+
+
+        public IActionResult Add(int id)
+        {
+            var viewModel = new TaskViewModel()
+            {
+                AllUsers = _userRepository.GetAll(),
+                AllProjects = _projectRepository.GetAllWithoutPagination()
+            };
+            return View(viewModel);
+        }
+
+        public IActionResult Update([FromForm] TaskViewModel model)
+        {
+            model.Task.Author = _userRepository.GetById(model.creatorId);
+            model.Task.Executor = _userRepository.GetById(model.executorId);
+            model.Task.Project = _projectRepository.GetById(model.projectId);
+            _taskRepository.Update(model.Task);
+            _taskRepository.Save();
+            return RedirectToAction("Index");
+        }
+
+        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

@@ -17,13 +17,11 @@ namespace MyCRM.Controllers
     [Authorize]
     public class NewsController : Controller
     {
-        private readonly ApplicationDbContext context;
         private readonly NewsRepository _newsRepository;
         private readonly UserRepository _userRepository;
 
         public NewsController(ApplicationDbContext context)
         {
-            this.context = context;
             _newsRepository = new NewsRepository(context);
             _userRepository = new UserRepository(context);
         }
@@ -39,12 +37,32 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
-        public IActionResult FormCreate()
+        public IActionResult Add()
         {
             return View();
         }
 
-        public async Task<IActionResult> Create([FromForm] News news)
+        public IActionResult Watch(int id)
+        {
+            var news = _newsRepository.GetById(id);
+            return View(news);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var news = _newsRepository.GetById(id);
+            return View(news);
+        }
+
+        public IActionResult Update(News news, string authorId)
+        {
+            news.Author = _userRepository.GetById(authorId);
+            _newsRepository.Update(news);
+            _newsRepository.Save();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Create([FromForm] News news)
         {
             news.CreatedDate = DateTime.Now;
             news.Author = _userRepository.GetById(GetUserId());

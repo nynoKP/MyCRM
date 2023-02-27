@@ -54,6 +54,21 @@ namespace MyCRM.Repository
             return all;
         }
 
+        public Tasks GetById(int id)
+        {
+            return context.Tasks.Include(c => c.Author)
+                .Include(c=>c.Executor)
+                .Include(c=>c.Project)
+                .Where(c => c.Id == id)
+                .First();
+        }
+
+        public void Add(Tasks task) => context.Tasks.Add(task);
         public void Save() => context.SaveChanges();
+
+        public void Update(Tasks task)
+        {
+            context.Tasks.Update(task);
+        }
     }
 }
