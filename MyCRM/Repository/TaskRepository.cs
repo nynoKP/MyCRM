@@ -5,17 +5,13 @@ using MyCRM.Models;
 
 namespace MyCRM.Repository
 {
-    public class TaskRepository
+    public class TaskRepository : RepositoryBase<Tasks>
     {
-        private readonly ApplicationDbContext context;
-        public TaskRepository(ApplicationDbContext context) => this.context = context;
+        public TaskRepository(ApplicationDbContext context) : base(context) => this.context = context;
 
         public int CountByFilter(TaskFilter taskFilter)
         {
-            var all = context.Tasks.Include(c => c.Executor)
-                .Include(c => c.Author)
-                .Include(c => c.Project)
-                .ThenInclude(c => c.Customer).ToList();
+            var all = FindAll().ToList();
             if (taskFilter.ContractorId != null)
             {
                 all = all.Where(c=>c.Project.Customer.Id == taskFilter.ContractorId).ToList();
@@ -31,12 +27,9 @@ namespace MyCRM.Repository
             return all.Count;
         }
 
-        public IEnumerable<Tasks> GetTasksByFilter(TaskFilter taskFilter, PaginationFilter paginationFilter)
+        public IEnumerable<Tasks> GetTasksByFilter(TaskFilter taskFilter, PaginationFilter filter)
         {
-            var all = context.Tasks.Include(c => c.Executor)
-                .Include(c => c.Author)
-                .Include(c => c.Project)
-                .ThenInclude(c => c.Customer).ToList();
+            var all = FindAll().ToList();
             if (taskFilter.ContractorId != null)
             {
                 all = all.Where(c => c.Project.Customer.Id == taskFilter.ContractorId).ToList();
@@ -49,26 +42,15 @@ namespace MyCRM.Repository
             {
                 all = all.Where(c => c.Executor.Id == taskFilter.UserId).ToList();
             }
-            all = all.Where((e, i) => i >= (paginationFilter.page - 1) * paginationFilter.pageSize && i < paginationFilter.pageSize * paginationFilter.page)
+            all = all.Skip((filter.page - 1) * filter.pageSize)
+                .Take(filter.pageSize)
                 .ToList();
             return all;
         }
 
         public Tasks GetById(int id)
         {
-            return context.Tasks.Include(c => c.Author)
-                .Include(c=>c.Executor)
-                .Include(c=>c.Project)
-                .Where(c => c.Id == id)
-                .First();
-        }
-
-        public void Add(Tasks task) => context.Tasks.Add(task);
-        public void Save() => context.SaveChanges();
-
-        public void Update(Tasks task)
-        {
-            context.Tasks.Update(task);
+            return FindByCondition(c => c.Id == id).First();
         }
     }
 }

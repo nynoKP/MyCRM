@@ -3,20 +3,18 @@ using MyCRM.Models;
 
 namespace MyCRM.Repository
 {
-    public class UserRepository
+    public class UserRepository : RepositoryBase<CRMUser>
     {
-        private readonly ApplicationDbContext context;
-        public UserRepository(ApplicationDbContext context) => this.context = context;
+        public UserRepository(ApplicationDbContext context) : base(context) => this.context = context;
 
         public List<CRMUser> GetAll()
         {
-            return context.Users.ToList();
+            return FindAll().ToList();
         }
 
         public CRMUser GetById(string Id)
         {
-            return context.Users.Where(c=>c.Id == Id).First();
+            return FindByCondition(c=>c.Id == Id).First();
         }
-        public void Save() => context.SaveChanges();
     }
 }

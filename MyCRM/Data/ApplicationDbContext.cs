@@ -11,6 +11,12 @@ namespace MyCRM.Data
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseLazyLoadingProxies();
+        }
+
         public DbSet<News> News { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Contragent> Contragent { get; set; }

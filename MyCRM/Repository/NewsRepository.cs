@@ -5,45 +5,23 @@ using MyCRM.Models;
 
 namespace MyCRM.Repository
 {
-    public class NewsRepository
+    public class NewsRepository : RepositoryBase<News>
     {
-        private readonly ApplicationDbContext context;
-        public NewsRepository(ApplicationDbContext context) => this.context = context;
+        public NewsRepository(ApplicationDbContext context) : base(context) => this.context = context;
 
         public News GetById(int Id)
         {
-            return context.News.Include(c=>c.Author)
-                .First(c => c.Id == Id);
+            return FindByCondition(c=>c.Id == Id)
+                .First();
         }
 
-        public List<News> GetByCreator(string AuthorId)
-        {
-            return context.News.Include(c=>c.Author)
-                .Where(c=>c.Author.Id == AuthorId)
-                .OrderByDescending(c=>c.CreatedDate)
-                .ToList();
-        }
         public List<News> GetAll(PaginationFilter filter)
         {
-            return context.News.Include(c => c.Author)
+            return FindAll()
                 .OrderByDescending(c => c.CreatedDate)
-                .ToList()
-                .Where((e, i) => i >= (filter.page - 1) * filter.pageSize && i < filter.pageSize * filter.page)
+                .Skip((filter.page - 1) * filter.pageSize)
+                .Take(filter.pageSize)
                 .ToList();
         }
-
-        public void Add(News crmNews) => context.News.Add(crmNews);
-
-        public int Count()
-        {
-            return context.News.Count();
-        }
-
-        public void Update(News crmNews)
-        {
-            context.News.Update(crmNews);
-        }
-
-        public void Save() => context.SaveChanges();
     }
 }

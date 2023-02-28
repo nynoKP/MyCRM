@@ -10,9 +10,9 @@ namespace MyCRM.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public CRMUser Creator { get; set; }
-        public CRMUser? Responsible { get; set; }
+        public virtual CRMUser Creator { get; set; }
+        public virtual CRMUser? Responsible { get; set; }
         [Required]
-        public Contragent? Customer { get; set; }
+        public virtual Contragent? Customer { get; set; }
     }
 }

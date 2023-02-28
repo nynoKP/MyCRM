@@ -66,7 +66,7 @@ namespace MyCRM.Controllers
         {
             news.CreatedDate = DateTime.Now;
             news.Author = _userRepository.GetById(GetUserId());
-            _newsRepository.Add(news);
+            _newsRepository.Create(news);
             _newsRepository.Save();
             return RedirectToAction("Index");
         }

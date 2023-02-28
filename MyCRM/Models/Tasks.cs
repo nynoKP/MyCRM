@@ -7,9 +7,9 @@
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime Deadline { get; set; }
-        public CRMUser Author { get; set; }
-        public CRMUser Executor { get; set; }
-        public Project Project { get; set; }
+        public virtual CRMUser Author { get; set; }
+        public virtual CRMUser Executor { get; set; }
+        public virtual Project Project { get; set; }
         public TaskStatus Status { get; set; }
     }
 

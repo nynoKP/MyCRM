@@ -76,7 +76,7 @@ namespace MyCRM.Controllers
             project.Creator = userRepository.GetById(GetUserId());
             project.Responsible = userRepository.GetById(userId);
             project.Customer = contragentRepository.GetById(customerId);
-            projectRepository.Add(project);
+            projectRepository.Create(project);
             projectRepository.Save();
             return RedirectToAction("Index");
         }

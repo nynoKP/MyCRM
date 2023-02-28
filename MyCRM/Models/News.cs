@@ -11,6 +11,6 @@ namespace MyCRM.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public CRMUser Author { get; set; }
+        public virtual CRMUser Author { get; set; }
     }
 }

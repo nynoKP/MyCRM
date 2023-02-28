@@ -47,7 +47,7 @@ namespace MyCRM.Controllers
             model.Task.Project = _projectRepository.GetById(model.projectId);
             model.Task.CreatedDate = DateTime.Now;
             model.Task.Status = Models.TaskStatus.New;
-            _taskRepository.Add(model.Task);
+            _taskRepository.Create(model.Task);
             _taskRepository.Save();
             return RedirectToAction("Index");
         }

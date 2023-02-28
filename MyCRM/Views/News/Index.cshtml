@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-body">
                                 
-                                <div class="content-overflow-hide-500">@(new HtmlString(@newsitem.Description))<div class="gradient-panel"></div></div>
+                                <div class="content-overflow-hide-500">@(new HtmlString(@newsitem.Description))<a asp-action="Watch" asp-route-id="@newsitem.Id"><div class="gradient-panel"></div></a></div>
                                 <p>Автор: <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@newsitem.Author.Id">@newsitem.Author.GetShortName()</a></p>
                             </div>
                         </div>

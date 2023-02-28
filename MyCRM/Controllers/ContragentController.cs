@@ -58,7 +58,7 @@ namespace MyCRM.Controllers
         public IActionResult Create([FromForm] Contragent contragent)
         {
             contragent.Creator = userRepository.GetById(GetUserId());
-            contragentRepository.Add(contragent);
+            contragentRepository.Create(contragent);
             contragentRepository.Save();
             return RedirectToAction("Index");
         }

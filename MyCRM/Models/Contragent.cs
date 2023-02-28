@@ -15,6 +15,6 @@ namespace MyCRM.Models
         public string? Phone { get; set; }
         public string? Pin { get; set; }
         public string? Inn { get; set; }
-        public CRMUser Creator { get; set; }
+        public virtual CRMUser Creator { get; set; }
     }
 }

@@ -39,7 +39,7 @@
                         <th><label class="form-label">Дата создания:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="date" readonly class="form-control" name="CreatedDate" value="@Model.CreatedDate">
+                                <input type="date" readonly class="form-control" name="CreatedDate" value="@Model.CreatedDate.ToString("yyyy-MM-dd")">
                             </div>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
                         <th><label class="form-label">Дата завершения:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="date" readonly class="form-control" name="Deadline" value="@Model.Deadline">
+                                <input type="date" readonly class="form-control" name="Deadline" value="@Model.Deadline.ToString("yyyy-MM-dd")">
                             </div>
                         </td>
                     </tr>
