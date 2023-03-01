@@ -1,0 +1,176 @@
+﻿@using MyCRM.ViewModels;
+@model TaskViewModel
+
+@{
+    ViewData["Title"] = "Задачи";
+}
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Задачи</h1>
+        <br>
+        <form method="post" asp-action="Index">
+            <div class="card">
+                <div class="card-body">
+                    <input type="text" hidden id="Page" name="Page">
+                    @*<p>ФИЛЬТР</p>*@
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Пользователь: </p>
+                            <select class="userDropDown" style="width:300px" name="UserId">
+                                <option></option>
+                                @foreach(var user in Model.AllUsers)
+                                {
+                                    if(user.Id == Model.TaskFilter.UserId)
+                                    {
+                                        <option selected value="@user.Id">@user.GetShortName()</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@user.GetShortName()</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <p>Проект: </p>
+                            <select class="projectDropDown" style="width:300px" name="ProjectId">
+                                <option></option>
+                                @foreach(var project in Model.AllProjects)
+                                {
+                                    if(project.Id == Model.TaskFilter.ProjectId)
+                                    {
+                                        <option selected value="@project.Id">@project.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@project.Id">@project.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <p>Контрагент: </p>
+                            <select class="customerDropDown" style="width:300px" name="ContractorId">
+                                <option></option>
+                                @foreach(var contragent in Model.AllContragents)
+                                {
+                                    if(contragent.Id == Model.TaskFilter.ContractorId)
+                                    {
+                                        <option selected value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm center">
+                            <button type="submit" id="submitButton" class="btn bg-gradient-success w-100 toast-btn">Применить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div style="margin-bottom: 25px">
+                        <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover m-0">
+                            <thead style=" position: sticky; top:-1px; z-index:500;">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Описание</th>
+                                    <th scope="col">Дата создания</th>
+                                    <th scope="col">Проект</th>
+                                    <th scope="col">Создатель</th>
+                                    <th scope="col">Ответственный</th>
+                                    <th scope="col">Статус</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Tasks != null && Model.Tasks.Any())
+                                    foreach (var item in Model.Tasks)
+                                    {
+                                        <tr>
+                                            <th>@item.Id</th>
+                                            <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
+                                            <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
+                                            <td style="white-space: normal !important;word-wrap: break-word !important;">@item.CreatedDate.ToShortDateString()</td>
+                                            <td><a asp-controller="Project" asp-action="Watch" asp-route-id="@item.Project.Id">@item.Project.Name</a></td>
+                                            <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Author.Id">@item.Author.GetShortName()</a></td>
+                                            <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Executor.Id">@item.Executor.GetShortName()</a></td>
+                                            <td>@item.Status</td>
+                                            <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="align-right">
+
+                        <div class="pagination" style="margin-top: 25px">
+                            <a onclick="setPageAnd('1')">&laquo;</a>
+                            @for (int i = Model.PaginationFilter.page - 2; i <= Model.PaginationFilter.page + 2; i++)
+                            {
+                                if (i > 0 && i <= Model.PaginationFilter.PageCount)
+                                {
+                                    if (i != Model.PaginationFilter.page)
+                                    {
+                                        <a onclick="setPageAnd('@(i)')">@(i)</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="active">@(i)</a>
+                                    }
+                                }
+                            }
+                            <a onclick="setPageAnd('@Model.PaginationFilter.PageCount')">&raquo;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('.userDropDown').select2({
+            allowClear: true,
+            placeholder: 'Пользователь'
+        });
+        $('.projectDropDown').select2({
+            allowClear: true,
+            placeholder: 'Проект'
+        });
+        $('.customerDropDown').select2({
+            allowClear: true,
+            placeholder: 'Заказчик'
+        });
+    });
+
+function setPageAnd(page){
+    $('#Page').val(page);
+    $('#submitButton').click();
+}
+</script>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+
+    .center {
+        text-align: center;
+        vertical-align:central;
+    }
+</style>
+
+

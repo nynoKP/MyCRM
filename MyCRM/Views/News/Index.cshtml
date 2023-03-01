@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Html;
+@using MyCRM.ViewModels;
+@model NewsViewModel
+@{
+    ViewData["Title"] = "Новости";
+}
+
+<link rel="stylesheet" href="~/plugins/summernote/summernote-bs5.min.css" />
+<script type="text/javascript" src="~/plugins/summernote/summernote-bs5.min.js"></script>
+
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Новости</h1>
+        <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 25px">
+                    <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
+                </div>
+                @if (Model.News.Count>0)
+                {
+                        
+                    @foreach(var newsitem in Model.News)
+                    {
+
+                        <div class="card card-dark">
+                            <div class="card-header">
+                                <h3 class="card-title"><a asp-action="Watch" asp-route-id="@newsitem.Id">@newsitem.Name</a></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                
+                                <div class="content-overflow-hide-500">@(new HtmlString(@newsitem.Description))<a asp-action="Watch" asp-route-id="@newsitem.Id"><div class="gradient-panel"></div></a></div>
+                                <p>Автор: <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@newsitem.Author.Id">@newsitem.Author.GetShortName()</a></p>
+                            </div>
+                        </div>
+                        <br>
+                    }
+                }
+                else
+                {
+                    <div class="card-body">
+                        <h5 class="display-1">Нет новостей</h5>
+                    </div>
+                }
+                <div class="align-right">
+
+                    <div class="pagination" style="margin-top: 25px">
+                        <a asp-controller="News" asp-action="Index" asp-route-page="1">&laquo;</a>
+                        @for (int i = Model.PaginationFilter.page - 2; i <= Model.PaginationFilter.page + 2; i++)
+                        {
+                            if (i > 0 && i <= Model.PaginationFilter.PageCount)
+                            {
+                                if (i != Model.PaginationFilter.page)
+                                {
+                                    <a asp-controller="News" asp-action="Index" asp-route-page="@(i)">@(i)</a>
+                                }
+                                else
+                                {
+                                    <a class="active">@(i)</a>
+                                }
+                            }
+                        }
+                        <a asp-controller="News" asp-action="Index" asp-route-page="@Model.PaginationFilter.PageCount">&raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+    .content-overflow-hide-500 {
+        overflow: hidden;
+        position: relative;
+        max-height: 500px;
+    }
+    .gradient-panel {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(to top,white, rgba(255, 255, 255, 0) 50%);
+    }
+</style>

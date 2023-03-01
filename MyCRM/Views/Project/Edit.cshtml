@@ -1,0 +1,94 @@
+﻿@using MyCRM.ViewModels;
+@model ProjectCreateViewModel
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-dark" style="margin-top: 25px">
+            <div class="card-header">
+                <h3 class="card-title">Редактирование проекта</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <form role="form" class="text-start" method="post" asp-action="Update">
+                    <input type="hidden" class="form-control" name="Id" value="@Model.EditProject.Id">
+                    <input type="hidden" class="form-control" name="Creator.Id" value="@Model.EditProject.Creator.Id">
+                    <table class="table table-striped">
+                        <tr>
+                            <th><label class="form-label">Наименование:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Name" value="@Model.EditProject.Name"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Описание:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description" value="@Model.EditProject.Description"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Заказчик:</label></th>
+                            <td>
+                                <select class="searchDropDown" style="width:300px" name="Customer.Id">
+                                    @foreach (var contragent in Model.Contragents)
+                                    {
+                                        if(contragent.Id == Model.EditProject.Customer.Id)
+                                        {
+                                            <option selected value="@contragent.Id">@contragent.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@contragent.Id">@contragent.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown').select2({
+                                            placeholder: 'Выберите контрагента'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Ответственный:</label></th>
+                            <td>
+                                <select class="searchDropDown2" style="width:300px" name="Responsible.Id">
+                                    <option></option>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        if(user.Id == Model.EditProject.Responsible.Id)
+                                        {
+                                            <option selected value="@user.Id">@user.UserName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@user.Id">@user.UserName</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown2').select2({
+                                            placeholder: 'Выберите ответственного'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="display: flex;">
+                        <div style="width: 10%;">
+                            <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
+                        </div>
+                        <div style="width: 10%; margin-left: 20px">
+                            <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

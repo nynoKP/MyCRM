@@ -2,25 +2,58 @@
 @inject SignInManager<CRMUser> SignInManager
 @inject UserManager<CRMUser> UserManager
 
-<ul class="navbar-nav">
+@{
+    var user = await UserManager.FindByEmailAsync(User.Identity.Name);
+}
+
+
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        <a class="nav-link" asp-controller="MyUser" asp-action="Watch" asp-route-id="@user?.Id">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                @(user?.GetShortName())
+            </p>
+        </a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
+        <a class="nav-link" href="#" id="exitButton">
+            <i class="nav-icon fas fa-arrow-right"></i>
+            <p>
+                Выйти
+            </p>
+        </a>
     </li>
+    <form class="nav-link" hidden asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "News", new { area = "" })">
+        <p>
+            <button type="submit" id="formExitButton" class="btn text-white">Выйти</button>
+        </p>
+    </form>
+    <script>
+        $(document).ready(function(){
+            $('#exitButton').click(function(){
+                $('#formExitButton').click();
+            });
+        });
+    </script>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">login</i>
+            </div>
+            <span class="nav-link-text ms-1">Войти</span>
+        </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">assignment</i>
+            </div>
+            <span class="nav-link-text ms-1">Зарегестрироваться</span>
+        </a>
     </li>
 }
-</ul>

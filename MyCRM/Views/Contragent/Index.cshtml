@@ -1,0 +1,81 @@
+﻿@using MyCRM.ViewModels;
+@model ContragentViewModel
+
+@{
+    ViewData["Title"] = "Контрагенты";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Контрагенты</h1>
+        <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 25px">
+                    <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover m-0">
+                        <thead style=" position: sticky; top:-1px; z-index:500;">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Inn</th>
+                                <th scope="col">Адрес</th>
+                                <th scope="col">Описание</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Контакт</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Contragents != null && Model.Contragents.Any())
+                                foreach (var item in Model.Contragents)
+                                {
+                                    <tr>
+                                        <th>@item.Id</th>
+                                        <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
+                                        <td>@item.Inn</td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Address</td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="align-right">
+
+                    <div class="pagination" style="margin-top: 25px">
+                        <a asp-controller="Contragent" asp-action="Index" asp-route-page="1">&laquo;</a>
+                        @for (int i = Model.PaginationFilter.page - 2; i <= Model.PaginationFilter.page + 2; i++)
+                        {
+                            if (i > 0 && i <= Model.PaginationFilter.PageCount)
+                            {
+                                if (i != Model.PaginationFilter.page)
+                                {
+                                    <a asp-controller="Contragent" asp-action="Index" asp-route-page="@(i)">@(i)</a>
+                                }
+                                else
+                                {
+                                    <a class="active">@(i)</a>
+                                }
+                            }
+                        }
+                        <a asp-controller="Contragent" asp-action="Index" asp-route-page="@Model.PaginationFilter.PageCount">&raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+</style>
+
+
