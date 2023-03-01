@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
+using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
@@ -12,22 +13,15 @@ namespace MyCRM.Controllers
     [Authorize]
     public class ContragentController : Controller
     {
-        private readonly ContragentRepository contragentRepository;
-        private readonly UserRepository userRepository;
+        private readonly IServiceManager _services;
 
-        public ContragentController(ApplicationDbContext context)
+        public ContragentController(IServiceManager service)
         {
-            contragentRepository = new ContragentRepository(context);
-            userRepository = new UserRepository(context);
+            _services = service;
         }
         public IActionResult Index(int page = 1)
         {
-            var filter = new PaginationFilter(contragentRepository.Count(),page);
-            var viewModel = new ContragentViewModel()
-            {
-                PaginationFilter = filter,
-                Contragents = contragentRepository.GetAll(filter)
-            };
+            var viewModel = _services.Contragent.GetAll(page);
             return View(viewModel);
         }
 
@@ -38,28 +32,23 @@ namespace MyCRM.Controllers
 
         public IActionResult Watch(int id)
         {
-            return View(contragentRepository.GetById(id));
+            return View(_services.Contragent.GetById(id));
         }
 
         public IActionResult Edit(int id)
         {
-            var contragent = contragentRepository.GetById(id);
-            return View(contragent);
+            return View(_services.Contragent.GetById(id));
         }
 
-        public IActionResult Update(Contragent contragent,string creatorId)
+        public IActionResult Update(Contragent contragent)
         {
-            contragent.Creator = userRepository.GetById(creatorId);
-            contragentRepository.Update(contragent);
-            contragentRepository.Save();
+            _services.Contragent.Update(contragent);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Create([FromForm] Contragent contragent)
+        public IActionResult Create(Contragent contragent)
         {
-            contragent.Creator = userRepository.GetById(GetUserId());
-            contragentRepository.Create(contragent);
-            contragentRepository.Save();
+            _services.Contragent.Create(contragent, GetUserId());
             return RedirectToAction("Index");
         }
 

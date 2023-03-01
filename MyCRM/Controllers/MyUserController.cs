@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
+using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 
@@ -10,41 +11,24 @@ namespace MyCRM.Controllers
     [Authorize]
     public class MyUserController : Controller
     {
-        private readonly UserManager<CRMUser> _userManager;
-        private readonly UserRepository _userRepository;
-
-        public MyUserController(ApplicationDbContext context, UserManager<CRMUser> userManager)
+        private readonly IServiceManager _service;
+        public MyUserController(IServiceManager service)
         {
-            _userRepository = new UserRepository(context);
-            _userManager = userManager;
+            _service = service;
         }
         public IActionResult Watch(string id)
         {
-            return View(_userRepository.GetById(id));
+            return View(_service.User.GetById(id));
         }
         public IActionResult Edit(string id)
         {
-            return View(_userRepository.GetById(id));
+            return View(_service.User.GetById(id));
         }
 
-        public IActionResult Update([FromForm] CRMUser user)
+        public IActionResult Update(CRMUser user)
         {
-            var userFromDb = _userManager.FindByIdAsync(user.Id).Result;
-            userFromDb.FirstName = user.FirstName;
-            userFromDb.LastName = user.LastName;
-            userFromDb.Email = user.Email.ToLower();
-            userFromDb.UserName = user.Email.ToUpper();
-            userFromDb.Patronymic = user.Patronymic;
-            userFromDb.PhoneNumber = user.PhoneNumber;
-            var result = _userManager.UpdateAsync(userFromDb).Result;
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return RedirectToAction("Edit", user.Id);
-            }
+            _service.User.Update(user);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

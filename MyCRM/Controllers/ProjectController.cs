@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
+using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
@@ -12,72 +13,44 @@ namespace MyCRM.Controllers
     [Authorize]
     public class ProjectController : Controller
     {
-        private readonly ApplicationDbContext context;
-        private readonly ProjectRepository projectRepository;
-        private readonly ContragentRepository contragentRepository;
-        private readonly UserRepository userRepository;
+        private readonly IServiceManager _service;
 
-        public ProjectController(ApplicationDbContext context)
+        public ProjectController(IServiceManager service)
         {
-            this.context = context;
-            projectRepository = new ProjectRepository(context);
-            contragentRepository = new ContragentRepository(context);
-            userRepository = new UserRepository(context);
+            _service = service;
         }
         public IActionResult Index(int page = 1)
         {
-            var filter = new PaginationFilter(projectRepository.Count(), page);
-            var viewModel = new ProjectViewModel()
-            {
-                PaginationFilter = filter,
-                Projects = projectRepository.GetAll(filter)
-            };
+            var viewModel = _service.Project.GetIndexView(page);
             return View(viewModel);
         }
 
         public IActionResult Add()
         {
-            var viewModel = new ProjectCreateViewModel()
-            {
-                Contragents = contragentRepository.GetAllWithoutPagination(),
-                Users = userRepository.GetAll()
-            };
+            var viewModel = _service.Project.GetAddView();
             return View(viewModel);
         }
 
         public IActionResult Watch(int id)
         {
-            return View(projectRepository.GetById(id));
+            return View(_service.Project.GetById(id));
         }
 
         public IActionResult Edit(int id)
         {
-            var viewModel = new ProjectCreateViewModel()
-            {
-                Contragents = contragentRepository.GetAllWithoutPagination(),
-                Users = userRepository.GetAll(),
-                EditProject = projectRepository.GetById(id)
-            };
+            var viewModel = _service.Project.GetEditView(id);
             return View(viewModel);
         }
 
-        public IActionResult Update(Project project,string userId, int customerId, string creatorId)
+        public IActionResult Update(Project project)
         {
-            project.Creator = userRepository.GetById(creatorId);
-            project.Responsible = userRepository.GetById(userId);
-            project.Customer = contragentRepository.GetById(customerId);
-            projectRepository.Update(project);
-            projectRepository.Save();
+            _service.Project.Update(project);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Create([FromForm] Project project, string userId, int customerId)
+        public IActionResult Create(Project project)
         {
-            project.Creator = userRepository.GetById(GetUserId());
-            project.Responsible = userRepository.GetById(userId);
-            project.Customer = contragentRepository.GetById(customerId);
-            projectRepository.Create(project);
-            projectRepository.Save();
+            _service.Project.Create(project, GetUserId());
             return RedirectToAction("Index");
         }
 

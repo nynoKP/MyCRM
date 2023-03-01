@@ -27,7 +27,5 @@ namespace MyCRM.Repository
         public void Update(T entity) => context.Set<T>().Update(entity);
 
         public void Delete(T entity) => context.Set<T>().Remove(entity);
-
-        public void Save() => context.SaveChanges();
     }
 }

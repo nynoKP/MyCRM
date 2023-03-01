@@ -28,7 +28,7 @@
                         <tr>
                             <th><label class="form-label">Заказчик:</label></th>
                             <td>
-                                <select class="searchDropDown" style="width:300px" name="customerId">
+                                <select class="searchDropDown" style="width:300px" name="Customer.Id">
                                     <option></option>
                                     @foreach(var contragent in Model.Contragents)
                                     {
@@ -47,7 +47,7 @@
                         <tr>
                             <th><label class="form-label">Ответственный:</label></th>
                             <td>
-                                <select class="searchDropDown2" style="width:300px" name="userId">
+                                <select class="searchDropDown2" style="width:300px" name="Responsible.Id">
                                     <option></option>
                                     @foreach (var user in Model.Users)
                                     {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCRM.Data;
 using MyCRM.Filters;
+using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
@@ -12,70 +13,40 @@ namespace MyCRM.Controllers
     [Authorize]
     public class TasksController : Controller
     {
-        private readonly UserRepository _userRepository;
-        private readonly TaskRepository _taskRepository;
-        private readonly ProjectRepository _projectRepository;
-        private readonly ContragentRepository _contragentRepository;
+        private readonly IServiceManager _service;
 
-        public TasksController(ApplicationDbContext context)
+        public TasksController(IServiceManager service)
         {
-            _userRepository = new UserRepository(context);
-            _taskRepository = new TaskRepository(context);
-            _projectRepository = new ProjectRepository(context);
-            _contragentRepository = new ContragentRepository(context);
+            _service = service;
         }
 
-        public IActionResult Index([FromForm] TaskFilter? taskFilter = null)
+        public IActionResult Index(TaskFilter? taskFilter)
         {
-            if (taskFilter == null) taskFilter = new TaskFilter();
-            var viewModel = new TaskViewModel()
-            {
-                AllUsers = _userRepository.GetAll(),
-                AllContragents = _contragentRepository.GetAllWithoutPagination(),
-                AllProjects = _projectRepository.GetAllWithoutPagination(),
-                PaginationFilter = new PaginationFilter(_taskRepository.CountByFilter(taskFilter), taskFilter.Page),
-                TaskFilter = taskFilter
-            };
-            viewModel.Tasks = _taskRepository.GetTasksByFilter(taskFilter, viewModel.PaginationFilter);
+            var viewModel = _service.Task.GetIndexView(taskFilter);
             return View(viewModel);
         }
 
-        public IActionResult Create([FromForm] TaskViewModel model)
+        public IActionResult Create(TaskViewModel model)
         {
-            model.Task.Author = _userRepository.GetById(GetUserId());
-            model.Task.Executor = _userRepository.GetById(model.executorId);
-            model.Task.Project = _projectRepository.GetById(model.projectId);
-            model.Task.CreatedDate = DateTime.Now;
-            model.Task.Status = Models.TaskStatus.New;
-            _taskRepository.Create(model.Task);
-            _taskRepository.Save();
+            _service.Task.Create(model, GetUserId());
             return RedirectToAction("Index");
         }
 
         public IActionResult Watch(int id)
         {
-            var task = _taskRepository.GetById(id);
-            return View(task);
+            return View(_service.Task.GetById(id));
         }
 
 
         public IActionResult Add(int id)
         {
-            var viewModel = new TaskViewModel()
-            {
-                AllUsers = _userRepository.GetAll(),
-                AllProjects = _projectRepository.GetAllWithoutPagination()
-            };
+            var viewModel = _service.Task.GetAddView(id);
             return View(viewModel);
         }
 
-        public IActionResult Update([FromForm] TaskViewModel model)
+        public IActionResult Update(TaskViewModel model)
         {
-            model.Task.Author = _userRepository.GetById(model.creatorId);
-            model.Task.Executor = _userRepository.GetById(model.executorId);
-            model.Task.Project = _projectRepository.GetById(model.projectId);
-            _taskRepository.Update(model.Task);
-            _taskRepository.Save();
+            _service.Task.Update(model);
             return RedirectToAction("Index");
         }
 

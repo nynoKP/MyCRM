@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using MyCRM.Data;
 using MyCRM.Filters;
+using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
@@ -17,23 +18,16 @@ namespace MyCRM.Controllers
     [Authorize]
     public class NewsController : Controller
     {
-        private readonly NewsRepository _newsRepository;
-        private readonly UserRepository _userRepository;
+        private readonly IServiceManager _services;
 
-        public NewsController(ApplicationDbContext context)
+        public NewsController(IServiceManager services)
         {
-            _newsRepository = new NewsRepository(context);
-            _userRepository = new UserRepository(context);
+            _services = services;
         }
 
         public IActionResult Index(int page = 1)
         {
-            var filter = new PaginationFilter(_newsRepository.Count(), page);
-            var viewModel = new NewsViewModel()
-            {
-                PaginationFilter = filter,
-                News = _newsRepository.GetAll(filter)
-            };
+            var viewModel = _services.News.GetAll(page);
             return View(viewModel);
         }
 
@@ -44,30 +38,23 @@ namespace MyCRM.Controllers
 
         public IActionResult Watch(int id)
         {
-            var news = _newsRepository.GetById(id);
-            return View(news);
+            return View(_services.News.GetById(id));
         }
 
         public IActionResult Edit(int id)
         {
-            var news = _newsRepository.GetById(id);
-            return View(news);
+            return View(_services.News.GetById(id));
         }
 
-        public IActionResult Update(News news, string authorId)
+        public IActionResult Update(News news)
         {
-            news.Author = _userRepository.GetById(authorId);
-            _newsRepository.Update(news);
-            _newsRepository.Save();
+            _services.News.Update(news);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Create([FromForm] News news)
+        public IActionResult Create(News news)
         {
-            news.CreatedDate = DateTime.Now;
-            news.Author = _userRepository.GetById(GetUserId());
-            _newsRepository.Create(news);
-            _newsRepository.Save();
+            _services.News.Create(news,GetUserId());
             return RedirectToAction("Index");
         }
 
