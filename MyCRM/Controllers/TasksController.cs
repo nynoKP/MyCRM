@@ -26,9 +26,9 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Create(TaskViewModel model)
+        public IActionResult Create(Tasks task)
         {
-            _service.Task.Create(model, GetUserId());
+            _service.Task.Create(task, GetUserId());
             return RedirectToAction("Index");
         }
 
@@ -37,16 +37,21 @@ namespace MyCRM.Controllers
             return View(_service.Task.GetById(id));
         }
 
-
-        public IActionResult Add(int id)
+        public IActionResult Edit(int id)
         {
-            var viewModel = _service.Task.GetAddView(id);
+            var viewModel = _service.Task.GetEditViewModel(id);
             return View(viewModel);
         }
 
-        public IActionResult Update(TaskViewModel model)
+        public IActionResult Add()
         {
-            _service.Task.Update(model);
+            var viewModel = _service.Task.GetAddView();
+            return View(viewModel);
+        }
+
+        public IActionResult Update(Tasks task)
+        {
+            _service.Task.Update(task);
             return RedirectToAction("Index");
         }
 

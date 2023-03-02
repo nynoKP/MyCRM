@@ -12,8 +12,5 @@ namespace MyCRM.ViewModels
         public PaginationFilter PaginationFilter { get; set; }
         public TaskFilter TaskFilter { get; set; }
         public Tasks Task { get; set; }
-        public string creatorId { get; set; }
-        public string executorId { get; set; }
-        public int projectId { get; set; }
     }
 }

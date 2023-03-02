@@ -23,20 +23,20 @@
                     <table class="table table-striped">
                         <tr>
                             <th><label class="form-label">Наименование:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Task.Name"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Name"></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Описание:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Task.Description"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description"></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Дата завершения:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="date" class="form-control" name="Task.Deadline"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><input type="date" class="form-control" name="Deadline"></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Проект:</label></th>
                             <td>
-                                <select class="searchDropDown" style="width:300px" name="projectId">
+                                <select class="searchDropDown" style="width:300px" name="Project.Id">
                                     <option value=""></option>
                                     @foreach (var project in Model.AllProjects)
                                     {
@@ -55,7 +55,7 @@
                         <tr>
                             <th><label class="form-label">Ответственный:</label></th>
                             <td>
-                                <select class="searchDropDown2" style="width:300px" name="executorId">
+                                <select class="searchDropDown2" style="width:300px" name="Executor.Id">
                                     <option></option>
                                     @foreach (var user in Model.AllUsers)
                                     {
