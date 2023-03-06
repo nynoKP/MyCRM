@@ -27,6 +27,8 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
+
+
         [Authorize(Roles = "Admin,CreateTasks")]
         public IActionResult Create(Tasks task)
         {
@@ -34,11 +36,15 @@ namespace MyCRM.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         [Authorize(Roles = "Admin,WatchTasks")]
         public IActionResult Watch(int id)
         {
             return View(_service.Task.GetById(id));
         }
+
+
 
         [Authorize(Roles = "Admin,EditTasks")]
         public IActionResult Edit(int id)
@@ -47,12 +53,16 @@ namespace MyCRM.Controllers
             return View(viewModel);
         }
 
+
+
         [Authorize(Roles = "Admin,AddTasks")]
         public IActionResult Add()
         {
             var viewModel = _service.Task.GetAddView();
             return View(viewModel);
         }
+
+
 
         [Authorize(Roles = "Admin,UpdateTasks")]
         public IActionResult Update(Tasks task)

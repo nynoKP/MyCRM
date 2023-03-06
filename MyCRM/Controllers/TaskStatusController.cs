@@ -15,11 +15,15 @@ namespace MyCRM.Controllers
             _service = service;
         }
 
+
+
         [Authorize(Roles = "Admin,IndexTaskStatus")]
         public IActionResult Index()
         {
             return View(_service.TaskStatus.GetAll());
         }
+
+
 
         [Authorize(Roles = "Admin,AddTaskStatus")]
         public IActionResult Add(TaskState status)
@@ -28,6 +32,8 @@ namespace MyCRM.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         [Authorize(Roles = "Admin,EditTaskStatus")]
         public IActionResult Edit(TaskState status)
         {
@@ -35,10 +41,12 @@ namespace MyCRM.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         [Authorize(Roles = "Admin,DeleteTaskStatus")]
-        public IActionResult Delete(TaskState status)
+        public IActionResult Delete(int id)
         {
-            _service.TaskStatus.Delete(status);
+            _service.TaskStatus.Delete(id);
             return RedirectToAction("Index");
         }
     }

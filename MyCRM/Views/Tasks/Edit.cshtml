@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
             <div class="card-header">
-                <h3 class="card-title">Создание задачи</h3>
+                <h3 class="card-title">Изменение задачи</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -30,10 +30,6 @@
                         <tr>
                             <th><label class="form-label">Описание:</label></th>
                             <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description" value="@Model.Task.Description"></div></td>
-                        </tr>
-                        <tr>
-                            <th><label class="form-label">Статус:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" readonly class="form-control" name="Status" value="@Model.Task.Status"></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Дата завершения:</label></th>
@@ -86,6 +82,32 @@
                                     $(document).ready(function () {
                                         $('.searchDropDown2').select2({
                                             placeholder: 'Выберите ответственного'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Статус:</label></th>
+                            <td>
+                                <select class="searchDropDown3" style="width:300px" name="Status.Id">
+                                    <option></option>
+                                    @foreach (var status in Model.TaskStatuses)
+                                    {
+                                        if (status.Id == Model.Task.Status.Id)
+                                        {
+                                            <option selected value="@status.Id">@status.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@status.Id">@status.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown3').select2({
+                                            placeholder: 'Выберите статус'
                                         });
                                     });
                                 </script>

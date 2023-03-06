@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <p>Пользователь: </p>
-                            <select class="userDropDown" style="width:300px" name="UserId">
+                            <select class="userDropDown" style="width: 90%;" name="UserId">
                                 <option></option>
                                 @foreach(var user in Model.AllUsers)
                                 {
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-sm">
                             <p>Проект: </p>
-                            <select class="projectDropDown" style="width:300px" name="ProjectId">
+                            <select class="projectDropDown" style="width: 90%;" name="ProjectId">
                                 <option></option>
                                 @foreach(var project in Model.AllProjects)
                                 {
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-sm">
                             <p>Контрагент: </p>
-                            <select class="customerDropDown" style="width:300px" name="ContractorId">
+                            <select class="customerDropDown" style="width: 90%;" name="ContractorId">
                                 <option></option>
                                 @foreach(var contragent in Model.AllContragents)
                                 {
@@ -63,6 +63,23 @@
                                     else
                                     {
                                         <option value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <p>Статус: </p>
+                            <select class="statusDropDown" style="width: 90%;" name="StatusId">
+                                <option></option>
+                                @foreach (var status in Model.TaskStatuses)
+                                {
+                                    if (status.Id == Model.TaskFilter.StatusId)
+                                    {
+                                        <option selected value="@status.Id">@status.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status.Id">@status.Name</option>
                                     }
                                 }
                             </select>
@@ -105,7 +122,7 @@
                                             <td><a asp-controller="Project" asp-action="Watch" asp-route-id="@item.Project.Id">@item.Project.Name</a></td>
                                             <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Author.Id">@item.Author.GetShortName()</a></td>
                                             <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Executor.Id">@item.Executor.GetShortName()</a></td>
-                                            <td>@item.Status</td>
+                                            <td>@item.Status.Name</td>
                                             <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
                                         </tr>
                                     }
@@ -152,6 +169,10 @@
         $('.customerDropDown').select2({
             allowClear: true,
             placeholder: 'Заказчик'
+        });
+        $('.statusDropDown').select2({
+            allowClear: true,
+            placeholder: 'Статус'
         });
     });
 

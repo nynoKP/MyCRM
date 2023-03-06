@@ -8,7 +8,7 @@ namespace MyCRM.Services
 {
     public class TaskService
     {
-        IRepositoryManager _repository;
+        private readonly IRepositoryManager _repository;
         public TaskService(IRepositoryManager repositoryManager)
         {
             _repository = repositoryManager;
@@ -22,6 +22,7 @@ namespace MyCRM.Services
                 AllUsers = _repository.Users.GetAll(),
                 AllContragents = _repository.Contragent.GetAllWithoutPagination(),
                 AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList(),
                 PaginationFilter = new PaginationFilter(_repository.Tasks.CountByFilter(taskFilter), taskFilter.Page),
                 TaskFilter = taskFilter
             };
@@ -50,7 +51,8 @@ namespace MyCRM.Services
             var viewModel = new TaskViewModel()
             {
                 AllUsers = _repository.Users.GetAll(),
-                AllProjects = _repository.Projects.GetAllWithoutPagination()
+                AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList()
             };
             return viewModel;
         }
@@ -71,6 +73,7 @@ namespace MyCRM.Services
             {
                 AllUsers = _repository.Users.GetAll(),
                 AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList(),
                 Task = _repository.Tasks.GetById(id)
             };
             return viewModel;

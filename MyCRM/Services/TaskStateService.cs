@@ -14,7 +14,7 @@ namespace MyCRM.Services
 
         public IEnumerable<TaskState> GetAll()
         {
-            return _repository.TaskStatuses.FindAll().ToList();
+            return _repository.TaskStatuses.FindAll().OrderBy(c=>c.Id).ToList();
         }
 
         public TaskState Get(int id)
@@ -25,20 +25,35 @@ namespace MyCRM.Services
 
         public void Update(TaskState status)
         {
-            _repository.TaskStatuses.Update(status);
-            _repository.Save();
+            if (status.isDefault)
+            {
+                UpdateDefault(status);
+            }
+            else
+            {
+                _repository.TaskStatuses.Update(status);
+                _repository.Save();
+            }
         }
 
-        public void Delete(TaskState status)
+        public void Delete(int id)
         {
+            var status = _repository.TaskStatuses.FindByCondition(c=>c.Id == id).First();
             _repository.TaskStatuses.Delete(status);
             _repository.Save();
         }
 
         public void Create(TaskState status)
         {
-            _repository.TaskStatuses.Create(status);
-            _repository.Save();
+            if (status.isDefault)
+            {
+                UpdateDefault(status);
+            }
+            else
+            {
+                _repository.TaskStatuses.Create(status);
+                _repository.Save();
+            }
         }
 
         public TaskState GetDefault()
@@ -48,7 +63,7 @@ namespace MyCRM.Services
 
         public void UpdateDefault(TaskState status)
         {
-            _repository.TaskStatuses.Update(status);
+            _repository.TaskStatuses.SetDefault(status);
             _repository.Save();
         }
     }

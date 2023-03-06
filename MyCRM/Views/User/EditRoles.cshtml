@@ -1,11 +1,27 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using MyCRM.ViewModels;
 @model EditUserRolesViewModel
+@{
+    var Contragent = Model.AllRoles.Where(c => c.Name.EndsWith("Contragent"));
+    var News = Model.AllRoles.Where(c => c.Name.EndsWith("News"));
+    var Project = Model.AllRoles.Where(c => c.Name.EndsWith("Project"));
+    var Roles = Model.AllRoles.Where(c => c.Name.EndsWith("Roles"));
+    var Tasks = Model.AllRoles.Where(c => c.Name.EndsWith("Tasks"));
+    var TaskStatus = Model.AllRoles.Where(c => c.Name.EndsWith("TaskStatus"));
+    var User = Model.AllRoles.Where(c => c.Name.EndsWith("User"));
+    var Any = Model.AllRoles.Where(c => !c.Name.EndsWith("User"))
+                            .Where(c => !c.Name.EndsWith("Contragent"))
+                            .Where(c => !c.Name.EndsWith("News"))
+                            .Where(c => !c.Name.EndsWith("Project"))
+                            .Where(c => !c.Name.EndsWith("Roles"))
+                            .Where(c => !c.Name.EndsWith("Tasks"))
+                            .Where(c => !c.Name.EndsWith("TaskStatus"));
+}
 <section class="content">
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
             <div class="card-header">
-                <h3 class="card-title">Редактирование роли пользователя </h3>
+                <h3 class="card-title">Редактирование роли пользователя @Model.User.GetShortName()</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -15,15 +31,105 @@
             <div class="card-body">
                 <form asp-action="EditRoles" method="post">
                     <input type="hidden" name="userId" value="@Model.User.Id" />
-                    <div class="form-group">
-                        @foreach (IdentityRole role in Model.AllRoles)
-                        {
-                            <div class="form-check form-switch" style="display: flex;">
-                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
-                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
-                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover m-0">
+                            <thead style=" position: sticky; top:-1px; z-index:500;">
+                                <tr>
+                                    <th scope="col">Contragent</th>
+                                    <th scope="col">News</th>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Roles</th>
+                                    <th scope="col">Tasks</th>
+                                    <th scope="col">TaskStatus</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Any</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @foreach (IdentityRole role in Contragent)
+                                        {
 
-                        }
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in News)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in Project)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in Roles)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in Tasks)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in TaskStatus)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in User)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (IdentityRole role in Any)
+                                        {
+
+                                            <div class="form-check form-switch" style="display: flex;">
+                                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

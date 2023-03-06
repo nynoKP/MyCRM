@@ -11,7 +11,9 @@
         <div class="card">
             <div class="card-body">
                 <div style="margin-bottom: 25px">
-                    <a type="submit" class="btn btn-primary" asp-action="Add">Создать</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create" id="CreateModal">
+                        Создать
+                    </button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover m-0">
@@ -25,30 +27,50 @@
                         </thead>
                         <tbody>
                             @if (Model != null && Model.Any())
-                            foreach (var item in Model)
-                            {
-                                <tr>
-                                    <th>@item.Id</th>
-                                    <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
-                                    <td>@item.isDefault</td>
-                                    <td>
-                                        <div style="display: flex;">
-                                            <div style="margin-right: 10px;">
-                                                <a class="btn btn-primary">Редактировать</a>
-                                            </div>
-                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-edit" id="EditModal" onclick="setDataToEditModal('@item.Id','@item.Name')">
-                                                Редактировать
-                                            </button>
-                                            @if(User.IsInRole("DeleteTaskStatus"))
-                                            {
-                                                <div style="margin-right: 10px;">
-                                                    <a asp-action="Delete" class="btn btn-danger">Удалить</a>
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th>@item.Id</th>
+                                        <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
+                                        <td>@item.isDefault</td>
+                                        <td>
+                                            <div style="display: flex;">
+                                                <button type="button" style="margin-right: 25px;" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-edit" id="EditModal" onclick="setDataToEditModal('@item.Id','@item.Name','@item.isDefault.ToString().ToLower()')">
+                                                    Редактировать
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal-delete-@item.Id" id="DeleteModal">
+                                                Удалить
+                                                </button>
+                                                <div class="modal fade" id="modal-delete-@item.Id" style="display: none;" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Удаление статуса</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <input type="text" hidden id="deleteItemId">
+                                                                Вы уверены что хотите удалить эту запись?
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-success" data-dismiss="modal">Отмена</button>
+                                                                <a type="submit" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Уверен</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
+                                                @if(User.IsInRole("DeleteTaskStatus"))
+                                                {
+                                                    <div style="margin-right: 10px;">
+                                                        <a asp-action="Delete" class="btn btn-danger">Удалить</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                         </tbody>
                     </table>
                 </div>
@@ -69,13 +91,45 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" hidden class="form-control" id="editId" name="Id" value="">
+                    <input type="text" hidden class="form-control" id="isDefault" name="isDefault" value="">
                     <div class="form-group">
                         <label for="editName">Наименование</label>
                         <input type="text" class="form-control" id="editName" name="Name" value="">
                     </div>
                     <div class="form-group">
                         <span style="margin-right: 40px;">Установить по умолчанию:</span>
-                        <input class="form-check-input" type="checkbox" name="isDefault" value="" />
+                        <input class="form-check-input" type="checkbox" id="isDefCheckbox" value="" onchange="setDefaultToEditModal($('#isDefCheckbox').is(':checked'))" />
+                        <br/>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-create" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-action="Add">
+                <div class="modal-header">
+                    <h4 class="modal-title">Создание статуса</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" hidden class="form-control" id="isDefault1" name="isDefault" value="">
+                    <div class="form-group">
+                        <label for="editName">Наименование</label>
+                        <input type="text" class="form-control" id="editName" name="Name" value="">
+                    </div>
+                    <div class="form-group">
+                        <span style="margin-right: 40px;">Установить по умолчанию:</span>
+                        <input class="form-check-input" type="checkbox" id="createIsDefChb" value="" onchange="setDefaultToCreateModal($('#createIsDefChb').is(':checked'))" />
                         <br/>
                     </div>
                 </div>
@@ -89,10 +143,26 @@
 </div>
 
 <script>
-    function setDataToEditModal(id,name,isDefault){
+    function setDataToEditModal(id, name, isDefault) {
         $('#editId').val(id);
         $('#editName').val(name);
-        $('#isDefault').prop('checked', isDefault);;
+        $('#isDefault').val(isDefault);
+        if (isDefault == 'true')
+        {
+            $('#isDefCheckbox').prop('checked', true);
+        }
+        else
+        {
+            $('#isDefCheckbox').prop('checked', false);
+        }
+    }
+
+    function setDefaultToEditModal(checkboxVal) {
+        $('#isDefault').val(checkboxVal);
+    }
+
+    function setDefaultToCreateModal(checkboxVal){
+        $('#isDefault1').val(checkboxVal);
     }
 </script>
 

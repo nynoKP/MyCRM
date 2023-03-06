@@ -24,6 +24,10 @@ namespace MyCRM.Repository
             {
                 all = all.Where(c => c.Executor.Id == taskFilter.UserId).ToList();
             }
+            if (taskFilter.StatusId != null)
+            {
+                all = all.Where(c => c.Status.Id == taskFilter.StatusId).ToList();
+            }
             return all.Count;
         }
 
@@ -41,6 +45,10 @@ namespace MyCRM.Repository
             if (taskFilter.UserId != null)
             {
                 all = all.Where(c => c.Executor.Id == taskFilter.UserId).ToList();
+            }
+            if (taskFilter.StatusId != null)
+            {
+                all = all.Where(c => c.Status.Id == taskFilter.StatusId).ToList();
             }
             all = all.Skip((filter.page - 1) * filter.pageSize)
                 .Take(filter.pageSize)
