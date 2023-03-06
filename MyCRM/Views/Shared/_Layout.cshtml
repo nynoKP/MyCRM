@@ -178,41 +178,96 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-header">Навигация</li>
-                        <li class="nav-item">
-                            <a asp-controller="News" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-newspaper"></i>
-                                <p>
-                                    Новости
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Contragent" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-user-ninja"></i>
-                                <p>
-                                    Контрагенты
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Project" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    Проекты
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Tasks" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-list"></i>
-                                <p>
-                                    Задачи
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-header">Пользователь</li>
                         <partial name="_LoginPartial" />
+                        <li class="nav-header">Навигация</li>
+                        @if (User.IsInRole("IndexNews") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="News" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-newspaper"></i>
+                                    <p>
+                                        Новости
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        
+                        @if (User.IsInRole("IndexContragent") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Contragent" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-user-ninja"></i>
+                                    <p>
+                                        Контрагенты
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        
+                        @if (User.IsInRole("IndexProject") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Project" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-table"></i>
+                                    <p>
+                                        Проекты
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        
+                        @if (User.IsInRole("IndexTasks") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Tasks" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-list"></i>
+                                    <p>
+                                        Задачи
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("IndexTaskStatus") || User.IsInRole("IndexUser") || User.IsInRole("IndexRoles"))
+                        {
+                            <li class="nav-header">Администрирование</li>
+                            @if (User.IsInRole("IndexTaskStatus") || User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="TaskStatus" asp-action="Index" class="nav-link">
+                                        <i class="nav-icon fas fa-newspaper"></i>
+                                        <p>
+                                            Статусы задач
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("IndexUser") || User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="User" asp-action="Index" class="nav-link">
+                                        <i class="nav-icon fas fa-user-ninja"></i>
+                                        <p>
+                                            Пользователи
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("IndexRoles") || User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Roles" asp-action="Index" class="nav-link">
+                                        <i class="nav-icon fas fa-user-ninja"></i>
+                                        <p>
+                                            Роли
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

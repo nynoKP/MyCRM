@@ -1,0 +1,108 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MyCRM.ViewModels;
+@model IEnumerable<CRMUser>
+@inject UserManager<CRMUser> userManager
+
+@{
+    ViewData["Title"] = "Пользователи";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Пользователи</h1>
+        <div class="card">
+            <div class="card-body">
+                @if (User.IsInRole("AddUser") || User.IsInRole("Admin"))
+                {
+                    <div style="margin-bottom: 25px">
+                        <a type="submit" class="btn btn-primary" asp-action="Add">Создать</a>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover m-0">
+                        <thead style="position: sticky; top:-1px; z-index:500;">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Логин</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Почта</th>
+                                <th scope="col">Телефон</th>
+                                <th scope="col">Роли</th>
+                                <th scope="col">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th>@item.Id</th>
+                                        <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.UserName</a></td>
+                                        <td>@item.GetShortName()</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.PhoneNumber</td>
+                                        <td>
+                                            @if (userManager.GetRolesAsync(item).Result.Count>0)
+                                            {
+                                                <div class="spoiler-wrap disabled">
+                                                    <div class="spoiler-head">Показать</div>
+                                                    @foreach (var role in userManager.GetRolesAsync(item).Result)
+                                                    {
+                                                        <div class="spoiler-body">@role</div>
+                                                    }
+                                                </div>                      
+                                            }
+                                            else{<span>Нет</span>}
+                                        </td>
+                                        <td>
+                                            <div style="display: flex;">
+                                                @if (User.IsInRole("EditUser") || User.IsInRole("Admin"))
+                                                {
+                                                    <div style="margin-right: 10px;">
+                                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактировать</a>
+                                                    </div>
+                                                }
+                                                @if (User.IsInRole("EditRolesUser") || User.IsInRole("Admin"))
+                                                {
+                                                    <div style="margin-right: 10px;">
+                                                        <a asp-action="EditRoles" asp-route-userId="@item.Id" class="btn btn-dark">Права</a>
+                                                    </div>
+                                                }
+                                                @if (User.IsInRole("DeleteTaskStatus") || User.IsInRole("Admin"))
+                                                {
+                                                    <div style="margin-right: 10px;">
+                                                        <a asp-action="Delete" asp-route-userId="@item.Id" class="btn btn-danger">Удалить</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+    .spoiler-wrap{background:#fff;margin: 0 0 8px;border:1px solid #efefef}
+    .spoiler-head{background:#efefef;cursor:pointer;padding:5px;}
+    .spoiler-body{padding:10px}
+    .spoiler-wrap.disabled .spoiler-body{display:none}
+    .spoiler-wrap.active{border-color:#57AA43}
+    .spoiler-wrap.active .spoiler-head{background:#57AA43;color:#fff}
+</style>
+
+<script>
+jQuery(document).ready(function(){
+    jQuery('.spoiler-head').click(function(){
+        $(this).parents('.spoiler-wrap').toggleClass("active").find('.spoiler-body').slideToggle();
+    })
+})
+</script>

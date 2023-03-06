@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCRM.Migrations
 {
     /// <inheritdoc />
-    public partial class Wipe : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,12 +166,13 @@ namespace MyCRM.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: false),
-                    Inn = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Pin = table.Column<string>(type: "text", nullable: true),
+                    Inn = table.Column<string>(type: "text", nullable: true),
                     CreatorId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -206,6 +207,39 @@ namespace MyCRM.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatorId = table.Column<string>(type: "text", nullable: true),
+                    ResponsibleId = table.Column<string>(type: "text", nullable: true),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Projects_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Projects_AspNetUsers_ResponsibleId",
+                        column: x => x.ResponsibleId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Projects_Contragent_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Contragent",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
@@ -217,6 +251,7 @@ namespace MyCRM.Migrations
                     Deadline = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AuthorId = table.Column<string>(type: "text", nullable: true),
                     ExecutorId = table.Column<string>(type: "text", nullable: true),
+                    ProjectId = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -232,7 +267,28 @@ namespace MyCRM.Migrations
                         column: x => x.ExecutorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tasks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "286077a1-4593-4620-b583-b5375aba3f5b", "286077a1-4593-4620-b583-b5375aba3f5b", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Patronymic", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "c40e32c7-ba16-40be-a0ff-3a8f47e37e88", 0, "603a0816-986b-42d5-aad9-aa1b3457913e", "admin@admin", true, "First", "Last", false, null, "ADMIN@ADMIN", "ADMIN", "AQAAAAIAAYagAAAAENIdlMfkHnB2Vgh5lfLBMoJfMZK1cQJg620bxBFKTD1MYrV1WUhks/5Z1pMe5zbi/w==", "Patronimic", null, false, "5edaecdc-0bab-4989-9c72-b929bdde564c", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "286077a1-4593-4620-b583-b5375aba3f5b", "c40e32c7-ba16-40be-a0ff-3a8f47e37e88" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -282,6 +338,21 @@ namespace MyCRM.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Projects_CreatorId",
+                table: "Projects",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_CustomerId",
+                table: "Projects",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_ResponsibleId",
+                table: "Projects",
+                column: "ResponsibleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AuthorId",
                 table: "Tasks",
                 column: "AuthorId");
@@ -290,6 +361,11 @@ namespace MyCRM.Migrations
                 name: "IX_Tasks_ExecutorId",
                 table: "Tasks",
                 column: "ExecutorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_ProjectId",
+                table: "Tasks",
+                column: "ProjectId");
         }
 
         /// <inheritdoc />
@@ -311,9 +387,6 @@ namespace MyCRM.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Contragent");
-
-            migrationBuilder.DropTable(
                 name: "News");
 
             migrationBuilder.DropTable(
@@ -321,6 +394,12 @@ namespace MyCRM.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Contragent");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

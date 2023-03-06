@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230222085843_Wipe")]
-    partial class Wipe
+    [Migration("20230303044235_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,9 @@ namespace MyCRM.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -49,6 +52,15 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            ConcurrencyStamp = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -138,6 +150,13 @@ namespace MyCRM.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            RoleId = "286077a1-4593-4620-b583-b5375aba3f5b"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -232,6 +251,27 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "603a0816-986b-42d5-aad9-aa1b3457913e",
+                            Email = "admin@admin",
+                            EmailConfirmed = true,
+                            FirstName = "First",
+                            LastName = "Last",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAENIdlMfkHnB2Vgh5lfLBMoJfMZK1cQJg620bxBFKTD1MYrV1WUhks/5Z1pMe5zbi/w==",
+                            Patronymic = "Patronimic",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5edaecdc-0bab-4989-9c72-b929bdde564c",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("MyCRM.Models.Contragent", b =>
@@ -243,30 +283,27 @@ namespace MyCRM.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CreatorId")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Inn")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pin")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -305,6 +342,40 @@ namespace MyCRM.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("MyCRM.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResponsibleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ResponsibleId");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("MyCRM.Models.Tasks", b =>
                 {
                     b.Property<int>("Id")
@@ -333,6 +404,9 @@ namespace MyCRM.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -341,6 +415,8 @@ namespace MyCRM.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("ExecutorId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Tasks");
                 });
@@ -414,6 +490,29 @@ namespace MyCRM.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("MyCRM.Models.Project", b =>
+                {
+                    b.HasOne("MyCRM.Models.CRMUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("MyCRM.Models.Contragent", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyCRM.Models.CRMUser", "Responsible")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleId");
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Responsible");
+                });
+
             modelBuilder.Entity("MyCRM.Models.Tasks", b =>
                 {
                     b.HasOne("MyCRM.Models.CRMUser", "Author")
@@ -424,9 +523,17 @@ namespace MyCRM.Migrations
                         .WithMany()
                         .HasForeignKey("ExecutorId");
 
+                    b.HasOne("MyCRM.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
 
                     b.Navigation("Executor");
+
+                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }

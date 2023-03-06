@@ -35,7 +35,7 @@ namespace MyCRM.Services
             task.Executor = _repository.Users.GetById(task.Executor.Id);
             task.Project = _repository.Projects.GetById(task.Project.Id);
             task.CreatedDate = DateTime.Now;
-            task.Status = Models.TaskStatus.New;
+            task.Status = _repository.TaskStatuses.GetDefault();
             _repository.Tasks.Create(task);
             _repository.Save();
         }
@@ -60,6 +60,7 @@ namespace MyCRM.Services
             task.Author = _repository.Users.GetById(task.Author.Id);
             task.Executor = _repository.Users.GetById(task.Executor.Id);
             task.Project = _repository.Projects.GetById(task.Project.Id);
+            task.Status = _repository.TaskStatuses.GetById(task.Status.Id);
             _repository.Tasks.Update(task);
             _repository.Save();
         }

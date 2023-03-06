@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MyCRM.ViewModels;
+@model EditUserRolesViewModel
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-dark" style="margin-top: 25px">
+            <div class="card-header">
+                <h3 class="card-title">Редактирование роли пользователя </h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-action="EditRoles" method="post">
+                    <input type="hidden" name="userId" value="@Model.User.Id" />
+                    <div class="form-group">
+                        @foreach (IdentityRole role in Model.AllRoles)
+                        {
+                            <div class="form-check form-switch" style="display: flex;">
+                                <input class="form-check-input" type="checkbox" name="roles" value="@role.Name"
+                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") /> <span style="margin-left: 10px;">@role.Name <br /></span>
+                            </div>
+
+                        }
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

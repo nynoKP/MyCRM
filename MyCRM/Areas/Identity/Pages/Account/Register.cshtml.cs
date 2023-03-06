@@ -72,6 +72,10 @@ namespace MyCRM.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
+
+            [Required]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
 
@@ -128,7 +132,7 @@ namespace MyCRM.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Patronymic = Input.Patronymic;
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -139,7 +143,7 @@ namespace MyCRM.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     await _userManager.ConfirmEmailAsync(user, code);
-                    var signIn = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: false);
+                    var signIn = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, lockoutOnFailure: false);
 
                     if (signIn.Succeeded)
                     {

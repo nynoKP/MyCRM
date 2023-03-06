@@ -9,6 +9,7 @@ namespace MyCRM.Interface.Repository
         NewsRepository News { get; }
         ProjectRepository Projects { get; }
         TaskRepository Tasks { get; }
+        TaskStateRepository TaskStatuses { get; }
         UserRepository Users { get; }
         public void Save();
     }
