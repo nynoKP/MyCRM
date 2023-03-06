@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
             <div class="card-header">
-                <h3 class="card-title">Создание задачи</h3>
+                <h3 class="card-title">Просмотр задачи</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -85,7 +85,7 @@
                         <th><label class="form-label">Статус:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" readonly class="form-control" name="Status" value="@Model.Status">
+                                <input type="text" readonly class="form-control" name="Status" value="@Model.Status.Name"/>
                             </div>
                         </td>
                     </tr>

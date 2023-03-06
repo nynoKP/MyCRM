@@ -19,13 +19,13 @@
                 <form method="post" asp-action="Create">
                     <div class="form-group">
                         <label for="inputName">Наименование</label>
-                        <input class="form-control" id="inputName" name="Name" />
+                        <input class="form-control" id="inputName" required name="Name" />
                     </div>
                     <div class="form-group">
                         <label for="summernote">Описание</label>
                     </div>
                     <div class="form-group">
-                        <textarea id="summernote" name="Description"></textarea>
+                        <textarea id="summernote" required name="Description"></textarea>
                     </div>
                     <div style="display: flex;">
                         <div class="form-group">

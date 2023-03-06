@@ -10,14 +10,6 @@
         public virtual CRMUser Author { get; set; }
         public virtual CRMUser Executor { get; set; }
         public virtual Project Project { get; set; }
-        public TaskStatus Status { get; set; }
-    }
-
-    public enum TaskStatus
-    {
-        New,
-        Active,
-        Success,
-        Overdue
+        public virtual TaskState Status { get; set; }
     }
 }

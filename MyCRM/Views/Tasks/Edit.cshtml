@@ -1,1 +1,129 @@
-﻿
+﻿@using MyCRM.ViewModels;
+@model TaskViewModel
+
+@{
+    ViewData["Title"] = "Изменение задачи";
+}
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-dark" style="margin-top: 25px">
+            <div class="card-header">
+                <h3 class="card-title">Изменение задачи</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <form role="form" class="text-start" method="post" asp-action="Update">
+                    <input type="text" class="form-control" hidden name="Id" value="@Model.Task.Id">
+                    <input type="text" class="form-control" hidden name="Author.Id" value="@Model.Task.Author.Id">
+                    <table class="table table-striped">
+                        <tr>
+                            <th><label class="form-label">Наименование:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Name" value="@Model.Task.Name"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Описание:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="text" class="form-control" name="Description" value="@Model.Task.Description"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Дата завершения:</label></th>
+                            <td><div class="input-group input-group-outline mb-3"><input type="date" class="form-control" name="Deadline" value="@Model.Task.Deadline.ToString("yyyy-MM-dd")"></div></td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Проект:</label></th>
+                            <td>
+                                <select class="searchDropDown" style="width:300px" name="Project.Id">
+                                    <option value=""></option>
+                                    @foreach (var project in Model.AllProjects)
+                                    {
+                                        if (project.Id == Model.Task.Project.Id)
+                                        {
+                                            <option selected value="@project.Id">@project.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@project.Id">@project.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown').select2({
+                                            placeholder: 'Выберите проект'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Ответственный:</label></th>
+                            <td>
+                                <select class="searchDropDown2" style="width:300px" name="Executor.Id">
+                                    <option></option>
+                                    @foreach (var user in Model.AllUsers)
+                                    {
+                                        if (user.Id == Model.Task.Executor.Id)
+                                        {
+                                            <option selected value="@user.Id">@user.GetShortName()</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@user.Id">@user.GetShortName()</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown2').select2({
+                                            placeholder: 'Выберите ответственного'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="form-label">Статус:</label></th>
+                            <td>
+                                <select class="searchDropDown3" style="width:300px" name="Status.Id">
+                                    <option></option>
+                                    @foreach (var status in Model.TaskStatuses)
+                                    {
+                                        if (status.Id == Model.Task.Status.Id)
+                                        {
+                                            <option selected value="@status.Id">@status.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@status.Id">@status.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.searchDropDown3').select2({
+                                            placeholder: 'Выберите статус'
+                                        });
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="display: flex;">
+                        <div style="width: 10%;">
+                            <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
+                        </div>
+                        <div style="width: 10%; margin-left: 20px">
+                            <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -34,10 +34,13 @@
                     </tr>
                 </table>
                 <div style="display: flex;">
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <div style="width: 10%; margin-right: 20px">
+                            <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                        </div>
+                    }
                     <div style="width: 10%;">
-                        <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-                    </div>
-                    <div style="width: 10%; margin-left: 20px">
                         <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
                     </div>
                 </div>

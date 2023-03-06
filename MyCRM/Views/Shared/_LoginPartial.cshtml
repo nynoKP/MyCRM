@@ -3,7 +3,7 @@
 @inject UserManager<CRMUser> UserManager
 
 @{
-    var user = await UserManager.FindByEmailAsync(User.Identity.Name);
+    var user = await UserManager.FindByNameAsync(User.Identity.Name);
 }
 
 

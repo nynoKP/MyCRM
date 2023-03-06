@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "Роли";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Роли</h1>
+        <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 25px">
+                    <a type="submit" class="btn btn-primary" asp-action="Sync">Синхронизовать</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover m-0">
+                        <thead style="position: sticky; top:-1px; z-index:500;">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Нормализованное название</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.NormalizedName</td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+</style>

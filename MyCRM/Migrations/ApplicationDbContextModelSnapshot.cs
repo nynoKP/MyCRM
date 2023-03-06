@@ -18,6 +18,9 @@ namespace MyCRM.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -46,6 +49,15 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            ConcurrencyStamp = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -135,6 +147,13 @@ namespace MyCRM.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            RoleId = "286077a1-4593-4620-b583-b5375aba3f5b"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -229,6 +248,27 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "87ac6e2c-029f-4f5d-98b6-e961acf0c3be",
+                            Email = "admin@admin",
+                            EmailConfirmed = true,
+                            FirstName = "First",
+                            LastName = "Last",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL0mQvnsZfYLRUebBLBj9QGq6QbBzKjNSpbypL8GoHfDBMO86S7rCPJw179827MM+w==",
+                            Patronymic = "Patronimic",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "0bce50e5-a397-44aa-bea5-fee6ae7ee318",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("MyCRM.Models.Contragent", b =>
@@ -333,6 +373,52 @@ namespace MyCRM.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("MyCRM.Models.TaskState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("isDefault")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Неопределена",
+                            isDefault = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Активна",
+                            isDefault = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "В ожидании",
+                            isDefault = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Завершена",
+                            isDefault = false
+                        });
+                });
+
             modelBuilder.Entity("MyCRM.Models.Tasks", b =>
                 {
                     b.Property<int>("Id")
@@ -364,7 +450,7 @@ namespace MyCRM.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("StatusId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -374,6 +460,8 @@ namespace MyCRM.Migrations
                     b.HasIndex("ExecutorId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Tasks");
                 });
@@ -486,11 +574,19 @@ namespace MyCRM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyCRM.Models.TaskState", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
 
                     b.Navigation("Executor");
 
                     b.Navigation("Project");
+
+                    b.Navigation("Status");
                 });
 #pragma warning restore 612, 618
         }

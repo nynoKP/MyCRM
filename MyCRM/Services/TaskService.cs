@@ -8,7 +8,7 @@ namespace MyCRM.Services
 {
     public class TaskService
     {
-        IRepositoryManager _repository;
+        private readonly IRepositoryManager _repository;
         public TaskService(IRepositoryManager repositoryManager)
         {
             _repository = repositoryManager;
@@ -22,6 +22,7 @@ namespace MyCRM.Services
                 AllUsers = _repository.Users.GetAll(),
                 AllContragents = _repository.Contragent.GetAllWithoutPagination(),
                 AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList(),
                 PaginationFilter = new PaginationFilter(_repository.Tasks.CountByFilter(taskFilter), taskFilter.Page),
                 TaskFilter = taskFilter
             };
@@ -29,14 +30,14 @@ namespace MyCRM.Services
             return viewModel;
         }
 
-        public void Create(TaskViewModel model, string creatorId)
+        public void Create(Tasks task, string creatorId)
         {
-            model.Task.Author = _repository.Users.GetById(creatorId);
-            model.Task.Executor = _repository.Users.GetById(model.executorId);
-            model.Task.Project = _repository.Projects.GetById(model.projectId);
-            model.Task.CreatedDate = DateTime.Now;
-            model.Task.Status = Models.TaskStatus.New;
-            _repository.Tasks.Create(model.Task);
+            task.Author = _repository.Users.GetById(creatorId);
+            task.Executor = _repository.Users.GetById(task.Executor.Id);
+            task.Project = _repository.Projects.GetById(task.Project.Id);
+            task.CreatedDate = DateTime.Now;
+            task.Status = _repository.TaskStatuses.GetDefault();
+            _repository.Tasks.Create(task);
             _repository.Save();
         }
 
@@ -45,23 +46,37 @@ namespace MyCRM.Services
             return _repository.Tasks.GetById(id);
         }
 
-        public TaskViewModel GetAddView(int id)
+        public TaskViewModel GetAddView()
         {
             var viewModel = new TaskViewModel()
             {
                 AllUsers = _repository.Users.GetAll(),
-                AllProjects = _repository.Projects.GetAllWithoutPagination()
+                AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList()
             };
             return viewModel;
         }
 
-        public void Update(TaskViewModel model)
+        public void Update(Tasks task)
         {
-            model.Task.Author = _repository.Users.GetById(model.creatorId);
-            model.Task.Executor = _repository.Users.GetById(model.executorId);
-            model.Task.Project = _repository.Projects.GetById(model.projectId);
-            _repository.Tasks.Update(model.Task);
+            task.Author = _repository.Users.GetById(task.Author.Id);
+            task.Executor = _repository.Users.GetById(task.Executor.Id);
+            task.Project = _repository.Projects.GetById(task.Project.Id);
+            task.Status = _repository.TaskStatuses.GetById(task.Status.Id);
+            _repository.Tasks.Update(task);
             _repository.Save();
+        }
+
+        public TaskViewModel GetEditViewModel(int id)
+        {
+            var viewModel = new TaskViewModel()
+            {
+                AllUsers = _repository.Users.GetAll(),
+                AllProjects = _repository.Projects.GetAllWithoutPagination(),
+                TaskStatuses = _repository.TaskStatuses.FindAll().ToList(),
+                Task = _repository.Tasks.GetById(id)
+            };
+            return viewModel;
         }
     }
 }

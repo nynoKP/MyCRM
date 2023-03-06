@@ -9,5 +9,7 @@ namespace MyCRM.Interface.Service
         ProjectService Project { get; }
         TaskService Task { get; }
         UserService User { get; }
+        TaskStateService TaskStatus { get; }
+        RolesService Roles { get; }
     }
 }

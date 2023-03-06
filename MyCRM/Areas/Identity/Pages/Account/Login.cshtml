@@ -2,7 +2,7 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Войти";
 }
 <main class="main-content mt-0 ps">
     <div class="page-header align-items-start min-vh-100" style="background-image: url(https://imageup.ru/img16/4199725/black_anime_background.jpg);">
@@ -21,15 +21,14 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                                 <div class="input-group input-group-outline mb-3">
                                     <div class="form-row" style="width: 100%">
-                                        <label>Почта: <br /></label>
-                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        <label>Логин: <br /></label>
+                                        <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Логин" />
                                     </div>
                                 </div>
                                 <div class="input-group input-group-outline mb-3">
                                     <div class="form-row" style="width: 100%">
                                         <label>Пароль: <br /></label>
-                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Пароль" />
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </div>
                                 </div>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230226132527_TasksFirst")]
-    partial class TasksFirst
+    [Migration("20230303054603_Second")]
+    partial class Second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,9 @@ namespace MyCRM.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -49,6 +52,15 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            ConcurrencyStamp = "286077a1-4593-4620-b583-b5375aba3f5b",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -138,6 +150,13 @@ namespace MyCRM.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            RoleId = "286077a1-4593-4620-b583-b5375aba3f5b"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -232,6 +251,27 @@ namespace MyCRM.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c40e32c7-ba16-40be-a0ff-3a8f47e37e88",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4545c69e-137f-498a-a83c-8c0b3da167f6",
+                            Email = "admin@admin",
+                            EmailConfirmed = true,
+                            FirstName = "First",
+                            LastName = "Last",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDlwkVsSLoQ8LpwjIEtnXFg+UPmQooB5wOQHGLcBPh3KUTKyqXZQJ2pP7XA4kiDang==",
+                            Patronymic = "Patronimic",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "da7d990c-8559-486a-9c45-9c840c6d58e3",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("MyCRM.Models.Contragent", b =>

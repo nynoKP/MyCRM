@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using MyCRM.Data;
@@ -25,33 +26,39 @@ namespace MyCRM.Controllers
             _services = services;
         }
 
+        //[Authorize(Roles = "Admin,IndexNews")]
         public IActionResult Index(int page = 1)
         {
             var viewModel = _services.News.GetAll(page);
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin,AddNews")]
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin,WatchNews")]
         public IActionResult Watch(int id)
         {
             return View(_services.News.GetById(id));
         }
 
+        [Authorize(Roles = "Admin,EditNews")]
         public IActionResult Edit(int id)
         {
             return View(_services.News.GetById(id));
         }
 
+        [Authorize(Roles = "Admin,UpdateNews")]
         public IActionResult Update(News news)
         {
             _services.News.Update(news);
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,CreateNews")]
         public IActionResult Create(News news)
         {
             _services.News.Create(news,GetUserId());

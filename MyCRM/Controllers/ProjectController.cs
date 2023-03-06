@@ -19,35 +19,42 @@ namespace MyCRM.Controllers
         {
             _service = service;
         }
+
+        [Authorize(Roles = "Admin,IndexProject")]
         public IActionResult Index(int page = 1)
         {
             var viewModel = _service.Project.GetIndexView(page);
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin,AddProject")]
         public IActionResult Add()
         {
             var viewModel = _service.Project.GetAddView();
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin,WatchProject")]
         public IActionResult Watch(int id)
         {
             return View(_service.Project.GetById(id));
         }
 
+        [Authorize(Roles = "Admin,EditProject")]
         public IActionResult Edit(int id)
         {
             var viewModel = _service.Project.GetEditView(id);
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin,UpdateProject")]
         public IActionResult Update(Project project)
         {
             _service.Project.Update(project);
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,CreateProject")]
         public IActionResult Create(Project project)
         {
             _service.Project.Create(project, GetUserId());
