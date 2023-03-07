@@ -13,9 +13,12 @@
         <h1 class="display-4" style="text-align: center">Новости</h1>
         <div class="card">
             <div class="card-body">
-                <div style="margin-bottom: 25px">
-                    <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
-                </div>
+                @if (User.IsInRole("Admin") || User.IsInRole("AddNews"))
+                {
+                    <div style="margin-bottom: 25px">
+                        <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
+                    </div>
+                }
                 @if (Model.News.Count>0)
                 {
                         
@@ -24,7 +27,16 @@
 
                         <div class="card card-dark">
                             <div class="card-header">
-                                <h3 class="card-title"><a asp-action="Watch" asp-route-id="@newsitem.Id">@newsitem.Name</a></h3>
+                                <h3 class="card-title">
+                                    @if (User.IsInRole("Admin") || User.IsInRole("WatchNews"))
+                                    {
+                                        <a asp-action="Watch" asp-route-id="@newsitem.Id">@newsitem.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">@newsitem.Name</a>
+                                    }
+                                </h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-minus"></i>
@@ -34,7 +46,16 @@
                             <div class="card-body">
                                 
                                 <div class="content-overflow-hide-500">@(new HtmlString(@newsitem.Description))<a asp-action="Watch" asp-route-id="@newsitem.Id"><div class="gradient-panel"></div></a></div>
-                                <p>Автор: <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@newsitem.Author.Id">@newsitem.Author.GetShortName()</a></p>
+                                <p>Автор:
+                                    @if (User.IsInRole("Admin") || User.IsInRole("WatchUser"))
+                                    {
+                                        <a asp-controller="User" asp-action="Watch" asp-route-id="@newsitem.Author.Id">@newsitem.Author.GetShortName()</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">@newsitem.Author.GetShortName()</a>
+                                    }
+                                </p>
                             </div>
                         </div>
                         <br>

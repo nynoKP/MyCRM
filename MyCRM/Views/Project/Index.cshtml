@@ -11,9 +11,12 @@
         <br>
         <div class="card">
             <div class="card-body">
-                <div style="margin-bottom: 25px">
-                    <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
-                </div>
+                @if (User.IsInRole("Admin") || User.IsInRole("AddProject"))
+                {
+                    <div style="margin-bottom: 25px">
+                        <a type="submit" class="btn btn-primary toRight" asp-action="Add">Создать</a>
+                    </div>
+                }
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover m-0">
                         <thead style=" position: sticky; top:-1px; z-index:500;">
@@ -33,12 +36,47 @@
                                 {
                                     <tr>
                                         <th>@item.Id</th>
-                                        <td class="text-white"><a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a></td>
-                                        <td style="white-space: normal !important;word-wrap: break-word !important;"><a asp-controller="Contragent" asp-action="Watch" asp-route-id="@item.Customer.Id">@item.Customer.Name</a></td>
+                                        <td>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("WatchProject"))
+                                            {
+                                                <a asp-action="Watch" asp-route-id="@item.Id">@item.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#">@item.Name</a>
+                                            }
+                                        </td>
+                                        <td style="white-space: normal !important;word-wrap: break-word !important;">
+                                            @if (User.IsInRole("Admin") || User.IsInRole("WatchContragent"))
+                                            {
+                                                <a asp-controller="Contragent" asp-action="Watch" asp-route-id="@item.Customer.Id">@item.Customer.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#">@item.Customer.Name</a>
+                                            }
+                                        </td>
                                         <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
-                                        <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Creator.Id">@item.Creator.GetShortName()</a></td>
-                                        <td><a asp-controller="MyUser" asp-action="Watch" asp-route-id="@item.Responsible.Id">@item.Responsible.GetShortName()</a></td>
-                                        <td><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("WatchUser"))
+                                        {
+                                            <td><a asp-controller="User" asp-action="Watch" asp-route-id="@item.Creator.Id">@item.Creator.GetShortName()</a></td>
+                                            <td><a asp-controller="User" asp-action="Watch" asp-route-id="@item.Responsible.Id">@item.Responsible.GetShortName()</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a href="#">@item.Creator.GetShortName()</a></td>
+                                            <td><a href="#">@item.Responsible.GetShortName()</a></td>
+                                        }
+                                        <td>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("EditProject"))
+                                            {
+                                                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#"  class="btn btn-outline-primary disabled">Edit</a>
+                                            }
+                                        </td>
                                     </tr>
                                 }
                         </tbody>

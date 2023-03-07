@@ -11,9 +11,12 @@
         <div class="card">
             <div class="card-body">
                 <div style="margin-bottom: 25px">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create" id="CreateModal">
-                        Создать
-                    </button>
+                    @if (User.IsInRole("Admin") || User.IsInRole("AddTaskStatus"))
+                    {
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create" id="CreateModal">
+                            Создать
+                        </button>
+                    }
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover m-0">
@@ -35,12 +38,14 @@
                                         <td>@item.isDefault</td>
                                         <td>
                                             <div style="display: flex;">
-                                                <button type="button" style="margin-right: 25px;" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-edit" id="EditModal" onclick="setDataToEditModal('@item.Id','@item.Name','@item.isDefault.ToString().ToLower()')">
+                                                <button type="button" style="margin-right: 25px;" @(User.IsInRole("Admin") || User.IsInRole("EditTaskStatus")? "": "disabled") class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-edit" id="EditModal" onclick="setDataToEditModal('@item.Id','@item.Name','@item.isDefault.ToString().ToLower()')">
                                                     Редактировать
                                                 </button>
-                                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal-delete-@item.Id" id="DeleteModal">
-                                                Удалить
+
+                                                <button type="button" class="btn btn-outline-danger" @(User.IsInRole("Admin") || User.IsInRole("DeleteTaskStatus")? "": "disabled") data-toggle="modal" data-target="#modal-delete-@item.Id" id="DeleteModal">
+                                                    Удалить
                                                 </button>
+
                                                 <div class="modal fade" id="modal-delete-@item.Id" style="display: none;" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -61,12 +66,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @if(User.IsInRole("DeleteTaskStatus"))
-                                                {
-                                                    <div style="margin-right: 10px;">
-                                                        <a asp-action="Delete" class="btn btn-danger">Удалить</a>
-                                                    </div>
-                                                }
                                             </div>
                                         </td>
                                     </tr>

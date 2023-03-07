@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyCRM.Data;
 using MyCRM.Interface.Service;
 using MyCRM.Models;
@@ -39,7 +40,7 @@ namespace MyCRM.Controllers
         public IActionResult Update(CRMUser user)
         {
             _service.User.Update(user);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "News");
         }
 
         [Authorize(Roles = "Admin,CreateUser")]

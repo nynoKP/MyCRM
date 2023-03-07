@@ -1,4 +1,7 @@
 ﻿@model Project
+@{
+    ViewData["Title"] = "Просмотр проекта";
+}
 <section class="content">
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
@@ -33,10 +36,13 @@
                         <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Customer.Name"></div></td>
                 </table>
                 <div style="display: flex;">
-                    <div style="width: 10%;">
-                        <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-                    </div>
-                    <div style="width: 10%; margin-left: 20px">
+                    @if (User.IsInRole("Admin") || User.IsInRole("EditProject"))
+                    {
+                        <div style="width: 10%; margin-right: 15px">
+                            <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                        </div>
+                    }
+                    <div style="width: 10%; margin-right: 15px">
                         <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
                     </div>
                 </div>

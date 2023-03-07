@@ -18,9 +18,12 @@
             <div class="card-body">
                 <div>@(new HtmlString(Model.Description))</div>
                 <div style="display: flex;">
-                    <div style="width: 10%;">
-                        <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-                    </div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("EditNews"))
+                    {
+                        <div style="width: 10%;">
+                            <a class="btn bg-gradient-success w-100 toast-btn" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+                        </div>
+                    }
                     <div style="width: 10%; margin-left: 20px">
                         <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
                     </div>

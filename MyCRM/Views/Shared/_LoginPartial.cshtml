@@ -10,7 +10,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a class="nav-link" asp-controller="MyUser" asp-action="Watch" asp-route-id="@user?.Id">
+        <a class="nav-link" asp-controller="User" asp-action="Watch" asp-route-id="@user?.Id">
             <i class="nav-icon fas fa-user"></i>
             <p>
                 @(user?.GetShortName())

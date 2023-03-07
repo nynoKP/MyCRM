@@ -2,13 +2,14 @@
 @using MyCRM.ViewModels;
 @model EditUserRolesViewModel
 @{
+    ViewData["Title"] = "Роли " + @Model.User.GetShortName();
     var Contragent = Model.AllRoles.Where(c => c.Name.EndsWith("Contragent"));
     var News = Model.AllRoles.Where(c => c.Name.EndsWith("News"));
     var Project = Model.AllRoles.Where(c => c.Name.EndsWith("Project"));
     var Roles = Model.AllRoles.Where(c => c.Name.EndsWith("Roles"));
     var Tasks = Model.AllRoles.Where(c => c.Name.EndsWith("Tasks"));
     var TaskStatus = Model.AllRoles.Where(c => c.Name.EndsWith("TaskStatus"));
-    var User = Model.AllRoles.Where(c => c.Name.EndsWith("User"));
+    var _User = Model.AllRoles.Where(c => c.Name.EndsWith("User"));
     var Any = Model.AllRoles.Where(c => !c.Name.EndsWith("User"))
                             .Where(c => !c.Name.EndsWith("Contragent"))
                             .Where(c => !c.Name.EndsWith("News"))
@@ -108,7 +109,7 @@
                                         }
                                     </td>
                                     <td>
-                                        @foreach (IdentityRole role in User)
+                                        @foreach (IdentityRole role in _User)
                                         {
 
                                             <div class="form-check form-switch" style="display: flex;">

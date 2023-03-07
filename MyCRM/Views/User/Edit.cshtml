@@ -1,10 +1,13 @@
 ﻿
 @model CRMUser
+@{
+    ViewData["Title"] = "Редактирование профиля " + @Model.GetShortName();
+}
 <section class="content">
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
             <div class="card-header">
-                <h3 class="card-title">Редактирование профиля</h3>
+                <h3 class="card-title">Редактирование профиля @Model.GetShortName()</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>

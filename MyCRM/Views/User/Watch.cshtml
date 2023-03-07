@@ -1,4 +1,7 @@
 ﻿@model CRMUser
+@{
+    ViewData["Title"] = Model.GetShortName();
+}
 <section class="content">
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">

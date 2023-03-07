@@ -33,10 +33,11 @@ namespace MyCRM.Services
             userFromDb.FirstName = user.FirstName;
             userFromDb.LastName = user.LastName;
             userFromDb.Email = user.Email.ToLower();
-            userFromDb.UserName = user.Email.ToUpper();
+            userFromDb.NormalizedEmail = user.Email.ToUpper();
             userFromDb.Patronymic = user.Patronymic;
             userFromDb.PhoneNumber = user.PhoneNumber;
-            _userManager.UpdateAsync(userFromDb);
+            _repository.Users.Update(userFromDb);
+            _repository.Save();
         }
 
         public void Create(CRMUser user)

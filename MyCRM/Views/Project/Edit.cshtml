@@ -1,5 +1,8 @@
 ﻿@using MyCRM.ViewModels;
 @model ProjectCreateViewModel
+@{
+    ViewData["Title"] = "Редактирование проекта";
+}
 <link href="~/css/select2.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <section class="content">
@@ -80,10 +83,13 @@
                         </tr>
                     </table>
                     <div style="display: flex;">
-                        <div style="width: 10%;">
-                            <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
-                        </div>
-                        <div style="width: 10%; margin-left: 20px">
+                        @if (User.IsInRole("Admin") || User.IsInRole("UpdateProject"))
+                        {
+                            <div style="width: 10%; margin-right: 15px">
+                                <button type="submit" class="btn bg-gradient-success w-100 toast-btn">Сохранить</button>
+                            </div>
+                        }
+                        <div style="width: 10%; margin-right: 15px">
                             <a class="btn bg-gradient-danger w-100 toast-btn" href="##" onClick="history.go(-1); return false;">Назад</a>
                         </div>
                     </div>

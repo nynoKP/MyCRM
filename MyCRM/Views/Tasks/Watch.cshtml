@@ -2,7 +2,7 @@
 @model Tasks
 
 @{
-    ViewData["Title"] = "Просмотр задачи";
+    ViewData["Title"] = Model.Name;
 }
 
 <section class="content">
@@ -55,9 +55,18 @@
                         <th><label class="form-label">Проект:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <a asp-controller="Project" asp-action="Watch" asp-route-id="@Model.Project.Id">
-                                    @Model.Project.Name
-                                </a>
+                                @if (User.IsInRole("Admin") || User.IsInRole("WatchProject"))
+                                {
+                                    <a asp-controller="Project" asp-action="Watch" asp-route-id="@Model.Project.Id">
+                                        @Model.Project.Name
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a>
+                                        @Model.Project.Name
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -65,9 +74,18 @@
                         <th><label class="form-label">Создатель:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@Model.Author.Id">
-                                    @Model.Author.GetShortName()
-                                </a>
+                                @if (User.IsInRole("Admin") || User.IsInRole("WatchUser"))
+                                {
+                                    <a asp-controller="User" asp-action="Watch" asp-route-id="@Model.Author.Id">
+                                        @Model.Author.GetShortName()
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a>
+                                        @Model.Author.GetShortName()
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -75,9 +93,18 @@
                         <th><label class="form-label">Ответственный:</label></th>
                         <td>
                             <div class="input-group input-group-outline mb-3">
-                                <a asp-controller="MyUser" asp-action="Watch" asp-route-id="@Model.Executor.Id">
-                                    @Model.Executor.GetShortName()
-                                </a>
+                                @if (User.IsInRole("Admin") || User.IsInRole("WatchUser"))
+                                {
+                                    <a asp-controller="User" asp-action="Watch" asp-route-id="@Model.Executor.Id">
+                                        @Model.Executor.GetShortName()
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a>
+                                        @Model.Executor.GetShortName()
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>
