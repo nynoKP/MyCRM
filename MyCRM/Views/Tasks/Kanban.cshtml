@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <h1 class="display-4" style="text-align: center">Задачи</h1>
         <br>
-        <form method="post" asp-action="Index">
+        <form method="post" asp-action="Kanban">
             <div class="card">
                 <div class="card-body">
                     <input type="text" hidden id="Page" name="Page">
@@ -83,7 +83,7 @@
 
                             @foreach(var status in Model.TaskStatuses)
                             {
-                                <div class="swim-lane" id="@("status_" + status.Id)">
+                                <div class="swim-lane" name="@status.Id" id="@("status_" + status.Id)">
                                     <h3 class="heading">@status.Name</h3>
                                     @foreach(var task in Model.Tasks.Where(c => c.Status == status))
                                     {
@@ -119,17 +119,20 @@
 
 <script>
     function testtest(id){
-        var newStatusId = $('#task_'+id).parent().attr('id');
-        alert(id + '  ' + newStatusId);
-        'Tasks/TestRequest'
-        $.ajax({
-            type: "POST",
-            url: 'Tasks/TestRequest',
-            dataType: "json",
-            data: {test: "1:1"},
-            success: function (data) { alert(data); },
-            error: function (data) { alert("error" + data); }
-        });
+        var newStatusId = $('#task_'+id).parent().attr('name');
+        var _url = 'UpdateStatus'
+        
+        $.post(_url,
+            {
+                TaskId: id,
+                StatusId: newStatusId
+            },
+            function (data, status) {
+                if(data != 'Success'){
+                    alert('Произошла непредвиденная ошибка! Обновите страницу!')
+                }
+            }
+        );
     }
 </script>
 

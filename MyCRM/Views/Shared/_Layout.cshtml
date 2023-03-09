@@ -216,16 +216,37 @@
                                 </a>
                             </li>
                         }
-                        
-                        @if (User.IsInRole("IndexTasks") || User.IsInRole("Admin"))
+
+                        @if (User.IsInRole("IndexTasks") || User.IsInRole("KanbanTasks") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a asp-controller="Tasks" asp-action="Index" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-list"></i>
                                     <p>
                                         Задачи
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    @if (User.IsInRole("IndexTasks") || User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-controller="Tasks" asp-action="Index" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Таблица</p>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (User.IsInRole("KanbanTasks") || User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-controller="Tasks" asp-action="Kanban" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Канбан (бета)</p>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
                             </li>
                         }
 
@@ -316,6 +337,40 @@
     <script src="~/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/dist/js/pages/dashboard3.js"></script>
+
+    @*Попытка делать активными вкладки*@
+    <script>
+        $(document).ready(function(){
+            var navItems = document.getElementsByClassName('nav-item');
+            var pathname = window.location.pathname; // Returns path only (/path/example.html)
+            var url = window.location.href;     // Returns full URL (https://example.com/path/example.html)
+            var origin = window.location.origin + '/';   // Returns base URL (https://example.com/)
+
+            alert('url: ' + url + '   origin: ' + origin);
+
+            for(let i=0;i<navItems.length;i++)
+            {
+                var curLink = navItems[i].firstElementChild.getAttribute('href') + '/';
+
+                //Домашняя
+                if (curLink == ) {
+                    navItems[i].firstElementChild.classList.add('active');
+                    return;
+                }
+
+
+
+
+
+
+
+
+                
+            }
+        });
+    </script>
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

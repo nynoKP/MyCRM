@@ -78,5 +78,16 @@ namespace MyCRM.Services
             };
             return viewModel;
         }
+
+        public void UpdateTaskStatus(UpdateTaskStatus? model)
+        {
+            if (model != null && model.TaskId != null && model.StatusId != null)
+            {
+                var task = _repository.Tasks.GetById(model.TaskId.Value);
+                task.Status = _repository.TaskStatuses.FindByCondition(c => c.Id == model.StatusId).First();
+                _repository.Tasks.Update(task);
+                _repository.Save();
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class UpdateTaskStatus
     {
-        public int TaskId { get; set; }
-        public int StatusId { get; set; }
+        public int? TaskId { get; set; }
+        public int? StatusId { get; set; }
     }
 }

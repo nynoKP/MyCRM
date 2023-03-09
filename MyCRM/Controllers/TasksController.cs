@@ -72,6 +72,8 @@ namespace MyCRM.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [Authorize(Roles = "Admin,KanbanTasks")]
         public IActionResult Kanban(TaskFilter? taskFilter)
         {
             var viewModel = _service.Task.GetIndexView(taskFilter);
@@ -79,10 +81,10 @@ namespace MyCRM.Controllers
         }
 
         [HttpPost]
-        public JsonResult TestRequest([FromBody] string test)
+        public JsonResult UpdateStatus(UpdateTaskStatus? model)
         {
-            var test1 = test;
-            return Json("reserasawdsadwa");
+            _service.Task.UpdateTaskStatus(model);
+            return Json("Success");
         }
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
