@@ -6,6 +6,7 @@ using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
 using MyCRM.ViewModels;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace MyCRM.Controllers
@@ -69,6 +70,19 @@ namespace MyCRM.Controllers
         {
             _service.Task.Update(task);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Kanban(TaskFilter? taskFilter)
+        {
+            var viewModel = _service.Task.GetIndexView(taskFilter);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult TestRequest([FromBody] string test)
+        {
+            var test1 = test;
+            return Json("reserasawdsadwa");
         }
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);

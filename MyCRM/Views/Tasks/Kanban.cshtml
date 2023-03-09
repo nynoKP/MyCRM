@@ -1,0 +1,165 @@
+﻿@using MyCRM.ViewModels;
+@model TaskViewModel
+@{
+    ViewData["Title"] = "Канбан нахой";
+}
+
+<link rel="stylesheet" href="~/plugins/dndtest/styles.css">
+<script src="~/plugins/dndtest/drag.js" defer></script>
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<section class="content">
+    <div class="container-fluid">
+        <h1 class="display-4" style="text-align: center">Задачи</h1>
+        <br>
+        <form method="post" asp-action="Index">
+            <div class="card">
+                <div class="card-body">
+                    <input type="text" hidden id="Page" name="Page">
+                    @*<p>ФИЛЬТР</p>*@
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Пользователь: </p>
+                            <select class="userDropDown" style="width: 90%;" name="UserId">
+                                <option></option>
+                                @foreach(var user in Model.AllUsers)
+                                {
+                                    if(user.Id == Model.TaskFilter.UserId)
+                                    {
+                                        <option selected value="@user.Id">@user.GetShortName()</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@user.GetShortName()</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <p>Проект: </p>
+                            <select class="projectDropDown" style="width: 90%;" name="ProjectId">
+                                <option></option>
+                                @foreach(var project in Model.AllProjects)
+                                {
+                                    if(project.Id == Model.TaskFilter.ProjectId)
+                                    {
+                                        <option selected value="@project.Id">@project.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@project.Id">@project.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <p>Контрагент: </p>
+                            <select class="customerDropDown" style="width: 90%;" name="ContractorId">
+                                <option></option>
+                                @foreach(var contragent in Model.AllContragents)
+                                {
+                                    if(contragent.Id == Model.TaskFilter.ContractorId)
+                                    {
+                                        <option selected value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@contragent.Id">@contragent.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm center">
+                            <button type="submit" id="submitButton" class="btn bg-gradient-success w-100 toast-btn">Применить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="board">
+                        <div class="lanes">
+
+                            @foreach(var status in Model.TaskStatuses)
+                            {
+                                <div class="swim-lane" id="@("status_" + status.Id)">
+                                    <h3 class="heading">@status.Name</h3>
+                                    @foreach(var task in Model.Tasks.Where(c => c.Status == status))
+                                    {
+                                        <div class="card task" id="@("task_" + @task.Id)" draggable="true" ondragend="testtest('@task.Id')">
+                                            <div class="card-header" style="padding: 0.5rem 0.5rem !important;">
+                                                <b>@task.Name</b>
+                                            </div>
+                                            <div class="card-body" style="padding: 0.5rem 0.5rem !important;">
+                                                <div class="">
+                                                    <label>Описание: </label>
+                                                    <span>@task.Description</span>
+                                                </div>
+                                                <div class="">
+                                                    <label>Дедлайн: </label>
+                                                    <span>@task.Deadline.ToShortDateString()</span>
+                                                </div>
+                                                <div class="">
+                                                    <label>Ответственный: </label>
+                                                    <span>@task.Executor.GetShortName()</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function testtest(id){
+        var newStatusId = $('#task_'+id).parent().attr('id');
+        alert(id + '  ' + newStatusId);
+        'Tasks/TestRequest'
+        $.ajax({
+            type: "POST",
+            url: 'Tasks/TestRequest',
+            dataType: "json",
+            data: {test: "1:1"},
+            success: function (data) { alert(data); },
+            error: function (data) { alert("error" + data); }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.userDropDown').select2({
+            allowClear: true,
+            placeholder: 'Пользователь'
+        });
+        $('.projectDropDown').select2({
+            allowClear: true,
+            placeholder: 'Проект'
+        });
+        $('.customerDropDown').select2({
+            allowClear: true,
+            placeholder: 'Заказчик'
+        });
+    });
+</script>
+
+<style>
+    .align-right {
+        text-align: right;
+        border: 0;
+    }
+
+    .center{
+        max-width: 130px;
+        /* text-align: center; */
+        /* top: 50%; */
+        transform: translate(0%,50%);
+    }
+</style>
