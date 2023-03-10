@@ -340,34 +340,19 @@
 
     @*Попытка делать активными вкладки*@
     <script>
-        $(document).ready(function(){
-            var navItems = document.getElementsByClassName('nav-item');
-            var pathname = window.location.pathname; // Returns path only (/path/example.html)
-            var url = window.location.href;     // Returns full URL (https://example.com/path/example.html)
-            var origin = window.location.origin + '/';   // Returns base URL (https://example.com/)
+        $(document).ready(() => {
+            $('ul.nav-sidebar > li > a')
+                .removeClass('active');
+            let path = location.pathname;
+            $('li.nav-item > a[href$="' + path + '"]').addClass('active');
 
-            alert('url: ' + url + '   origin: ' + origin);
-
-            for(let i=0;i<navItems.length;i++)
+            if ($('ul.nav-treeview > li.nav-item > a.active').length != 0)
             {
-                var curLink = navItems[i].firstElementChild.getAttribute('href') + '/';
-
-                //Домашняя
-                if (curLink == ) {
-                    navItems[i].firstElementChild.classList.add('active');
-                    return;
-                }
-
-
-
-
-
-
-
-
-                
+                $('ul.nav-treeview > li.nav-item > a.active').parent().parent().attr('style', 'display: block');
+                $('ul.nav-treeview > li.nav-item > a.active').parent().parent().parent().addClass('menu-is-opening menu-open');
+                $('ul.nav-treeview > li.nav-item > a.active').parent().parent().parent().children().first().addClass('active');
             }
-        });
+        })
     </script>
 
 
