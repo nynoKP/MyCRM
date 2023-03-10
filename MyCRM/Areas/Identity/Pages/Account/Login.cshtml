@@ -2,10 +2,11 @@
 @model LoginModel
 
 @{
+    var bgUrl = "https://" + Request.Host.ToString() + "/assets/img/black_background.jpg";
     ViewData["Title"] = "Войти";
 }
 <main class="main-content mt-0 ps">
-    <div class="page-header align-items-start min-vh-100" style="background-image: url(https://imageup.ru/img16/4199725/black_anime_background.jpg);">
+    <div class="page-header align-items-start min-vh-100 myBackGround">
         <span class="mask bg-gradient-dark opacity-6"></span>
         <div class="container my-auto">
             <div class="row">
@@ -53,6 +54,14 @@
     </div>
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
 </main>
+
+
+<style>
+    .myBackGround{
+        background-image: url(@bgUrl);
+    }
+</style>
+
 
 @*<div class="row">
     <div class="col-md-4">

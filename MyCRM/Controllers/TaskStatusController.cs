@@ -5,7 +5,7 @@ using MyCRM.Models;
 
 namespace MyCRM.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class TaskStatusController : Controller
     {
         IServiceManager _service;
