@@ -70,5 +70,19 @@ namespace MyCRM.Services
         {
             _userManager.DeleteAsync(_userManager.FindByIdAsync(userId).Result).Wait();
         }
+
+        public void Add(RegisterUser userData)
+        {
+            PasswordHasher<CRMUser> ph = new PasswordHasher<CRMUser>();
+            CRMUser user = new CRMUser();
+            user.UserName = userData.UserName;
+            user.FirstName = userData.FirstName;
+            user.LastName = userData.LastName;
+            user.Email = userData.Email;
+            user.Patronymic = userData.Patronymic;
+            user.PhoneNumber = userData.PhoneNumber;
+            user.PasswordHash = ph.HashPassword(user, userData.Password);
+            _userManager.CreateAsync(user).Wait();
+        }
     }
 }

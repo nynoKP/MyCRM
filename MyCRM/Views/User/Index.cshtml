@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Пользователи";
+    var thisUser = User.Identity.Name;
 }
 
 <section class="content">
@@ -68,10 +69,10 @@
                                                         <a asp-action="EditRoles" asp-route-userId="@item.Id" class="btn btn-dark">Права</a>
                                                     </div>
                                                 }
-                                                @if (User.IsInRole("DeleteTaskStatus") || User.IsInRole("Admin"))
+                                                @if (User.IsInRole("DeleteUser") || User.IsInRole("Admin"))
                                                 {
                                                     <div style="margin-right: 10px;">
-                                                        <a asp-action="Delete" asp-route-userId="@item.Id" class="btn btn-danger">Удалить</a>
+                                                        <a asp-action="Delete" asp-route-userId="@item.Id" class="btn btn-danger @(thisUser == item.UserName? "disabled" : "")">Удалить</a>
                                                     </div>
                                                 }
                                             </div>

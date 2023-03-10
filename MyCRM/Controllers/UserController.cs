@@ -6,6 +6,7 @@ using MyCRM.Data;
 using MyCRM.Interface.Service;
 using MyCRM.Models;
 using MyCRM.Repository;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyCRM.Controllers
 {
@@ -13,6 +14,7 @@ namespace MyCRM.Controllers
     public class UserController : Controller
     {
         private readonly IServiceManager _service;
+
         public UserController(IServiceManager service)
         {
             _service = service;
@@ -43,17 +45,6 @@ namespace MyCRM.Controllers
             return RedirectToAction("Index", "News");
         }
 
-        [Authorize(Roles = "Admin,CreateUser")]
-        public IActionResult Create(CRMUser user)
-        {
-            PasswordHasher<CRMUser> ph = new PasswordHasher<CRMUser>();
-            user.PasswordHash = ph.HashPassword(user, user.PasswordHash);
-            user.NormalizedUserName = user.UserName.ToUpper();
-            user.NormalizedEmail = user.Email.ToUpper();
-            _service.User.Create(user);
-            return RedirectToAction("Index", "User");
-        }
-
         [Authorize(Roles = "Admin,EditRolesUser")]
         [HttpPost]
         public IActionResult EditRoles(IEnumerable<string> roles, string userId)
@@ -74,6 +65,20 @@ namespace MyCRM.Controllers
         {
             _service.User.Delete(userId);
             return RedirectToAction("Index", "User");
+        }
+
+        [Authorize(Roles = "Admin,AddUser")]
+        [HttpPost]
+        public IActionResult Add([FromForm] RegisterUser userData)
+        {
+            _service.User.Add(userData);
+            return RedirectToAction("Index", "User");
+        }
+
+        [Authorize(Roles = "Admin,AddUser")]
+        public IActionResult Add()
+        {
+            return View();
         }
     }
 }
