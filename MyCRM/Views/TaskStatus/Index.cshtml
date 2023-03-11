@@ -1,9 +1,13 @@
 ﻿@using MyCRM.ViewModels;
 @model IEnumerable<TaskState>
-
 @{
     ViewData["Title"] = "Статусы";
+    string error = ViewData["error"]?.ToString();
 }
+
+<link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+<script src="~/plugins/toastr/toastr.min.js"></script>
+
 
 <section class="content">
     <div class="container-fluid">
@@ -163,6 +167,13 @@
     function setDefaultToCreateModal(checkboxVal){
         $('#isDefault1').val(checkboxVal);
     }
+
+    $(document).ready(()=>{
+        var err = '@error';
+        if(err.length > 0){
+            toastr.error(err);
+        } 
+    });
 </script>
 
 <style>

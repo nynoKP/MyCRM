@@ -18,8 +18,9 @@ namespace MyCRM.Controllers
 
 
         [Authorize(Roles = "Admin,IndexTaskStatus")]
-        public IActionResult Index()
+        public IActionResult Index(ResultAction? result)
         {
+            ViewData["error"] = result.Message;
             return View(_service.TaskStatus.GetAll());
         }
 
@@ -46,8 +47,8 @@ namespace MyCRM.Controllers
         [Authorize(Roles = "Admin,DeleteTaskStatus")]
         public IActionResult Delete(int id)
         {
-            _service.TaskStatus.Delete(id);
-            return RedirectToAction("Index");
+            var result = _service.TaskStatus.TryDelete(id);
+            return RedirectToAction("Index", result);
         }
     }
 }

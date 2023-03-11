@@ -66,5 +66,19 @@ namespace MyCRM.Services
             _repository.TaskStatuses.SetDefault(status);
             _repository.Save();
         }
+
+        public ResultAction TryDelete(int id)
+        {
+            var tasks = _repository.Tasks.FindByCondition(c => c.Status.Id == id);
+            if(tasks.Count() > 0)
+            {
+                return new ResultAction() { Success = false, Message = "Нельзя удалить используемый статус. Сначала определите задачи в другой!" };
+            }
+            else
+            {
+                Delete(id);
+                return new ResultAction() { Success = false};
+            }
+        }
     }
 }
