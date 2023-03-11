@@ -54,7 +54,7 @@
                                     <option></option>
                                     @foreach (var user in Model.Users)
                                     {
-                                        <option value="@user.Id">@user.UserName</option>
+                                        <option value="@user.Id">@user.GetShortName()</option>
                                     }
                                 </select>
                                 <script>

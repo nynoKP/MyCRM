@@ -25,11 +25,11 @@
                     </tr>
                     <tr>
                         <th><label class="form-label">Создатель:</label></th>
-                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Creator.UserName"></div></td>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Creator.GetShortName()"></div></td>
                     </tr>
                     <tr>
                         <th><label class="form-label">Ответсвтенный:</label></th>
-                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Responsible"></div></td>
+                        <td><div class="input-group input-group-outline mb-3"><input readonly type="text" class="form-control" value="@Model.Responsible.GetShortName()"></div></td>
                     </tr>
                     <tr>
                         <th><label class="form-label">Заказчик:</label></th>

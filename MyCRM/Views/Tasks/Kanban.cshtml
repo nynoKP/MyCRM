@@ -89,12 +89,12 @@
                                     {
                                         <div class="card task" id="@("task_" + @task.Id)" draggable="true" ondragend="testtest('@task.Id')">
                                             <div class="card-header" style="padding: 0.5rem 0.5rem !important;">
-                                                <b>@task.Name</b>
+                                                <b><a asp-action="Watch" asp-route-id="@task.Id">@task.Name</a></b>
                                             </div>
                                             <div class="card-body" style="padding: 0.5rem 0.5rem !important;">
                                                 <div class="">
-                                                    <label>Описание: </label>
-                                                    <p>@task.Description</p>
+                                                    <label>Проект: </label>
+                                                    <span>@task.Project.Name</span>
                                                 </div>
                                                 <div class="">
                                                     <label>Дедлайн: </label>

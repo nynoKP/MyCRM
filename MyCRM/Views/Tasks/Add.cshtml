@@ -4,8 +4,14 @@
 @{
     ViewData["Title"] = "Создание задачи";
 }
+
+
+<link rel="stylesheet" href="~/plugins/summernote/summernote-bs5.min.css" />
+<script type="text/javascript" src="~/plugins/summernote/summernote-bs5.min.js"></script>
 <link href="~/css/select2.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 <section class="content">
     <div class="container-fluid">
         <div class="card card-dark" style="margin-top: 25px">
@@ -27,7 +33,7 @@
                         </tr>
                         <tr>
                             <th><label class="form-label">Описание:</label></th>
-                            <td><div class="input-group input-group-outline mb-3"><input type="text" required class="form-control" name="Description"></div></td>
+                            <td><div class="input-group input-group-outline mb-3"><textarea id="snDescription" required name="Description"></textarea></div></td>
                         </tr>
                         <tr>
                             <th><label class="form-label">Дата завершения:</label></th>
@@ -59,7 +65,7 @@
                                     <option></option>
                                     @foreach (var user in Model.AllUsers)
                                     {
-                                        <option value="@user.Id">@user.UserName</option>
+                                        <option value="@user.Id">@user.GetShortName()</option>
                                     }
                                 </select>
                                 <script>
@@ -107,3 +113,12 @@
         </div>
     </div>
 </section>
+
+
+<script>
+    $(document).ready(function () {
+        $('#snDescription').summernote({
+            height: 500
+        });
+    });
+</script>

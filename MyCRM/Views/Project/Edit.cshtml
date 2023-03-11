@@ -64,11 +64,11 @@
                                     {
                                         if(user.Id == Model.EditProject.Responsible.Id)
                                         {
-                                            <option selected value="@user.Id">@user.UserName</option>
+                                            <option selected value="@user.Id">@user.GetShortName()</option>
                                         }
                                         else
                                         {
-                                            <option value="@user.Id">@user.UserName</option>
+                                            <option value="@user.Id">@user.GetShortName()</option>
                                         }
                                     }
                                 </select>

@@ -103,7 +103,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Название</th>
-                                    <th scope="col">Описание</th>
+                                    @*<th scope="col">Описание</th>*@
                                     <th scope="col">Дата создания</th>
                                     <th scope="col">Проект</th>
                                     <th scope="col">Создатель</th>
@@ -128,7 +128,7 @@
                                                     <a href="#">@item.Name</a>
                                                 }
                                             </td>
-                                            <td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>
+                                            @*<td style="white-space: normal !important;word-wrap: break-word !important;">@item.Description</td>*@
                                             <td style="white-space: normal !important;word-wrap: break-word !important;">@item.CreatedDate.ToShortDateString()</td>
                                             <td>
                                                 @if (User.IsInRole("Admin") || User.IsInRole("WatchProject"))
