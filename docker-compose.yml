@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  mycrm:
+    image: ${DOCKER_REGISTRY-}mycrm
+    build:
+      context: .
+      dockerfile: MyCRM/Dockerfile
