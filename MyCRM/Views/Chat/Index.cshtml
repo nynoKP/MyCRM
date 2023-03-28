@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<CRMUser>
+@inject UserManager<CRMUser> manager
+
+@{
+    var sender = manager.Users.Where(c=>c.UserName == User.Identity.Name).First().Id;
+}
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/css/myChat.css" rel="stylesheet" />
+
+<div>
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <input type="text" id="sender" hidden>
+                <input type="text" id="recipient" hidden>
+                <div id="plist" class="people-list">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </div>
+                    <ul class="list-unstyled chat-list mt-2 mb-0">
+                        @foreach(var user in Model)
+                        {
+                            <li class="clearfix" onclick="getChatWithUser('@user.Id','@user.GetShortName()')">
+                                <div class="about">
+                                    <div class="name">@user.GetShortName()</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="chat-about">
+                                    <h6 class="m-b-0" id="selectedChat"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history">
+                        <div class="container" id="chatPanel" style="overflow-y: scroll;height: 400px;max-height:5000px !important;">
+                            <ul class="m-b-0" id="chatMessageContainer">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chat-message clearfix" id="sendBtn" hidden>
+                        <div class="input-group mb-0">
+                            <input type="text" id="chatMessage" class="form-control" placeholder="Enter text here...">
+                            <div class="btn" onclick="sendMessage()">
+                                <span class="input-group-text"><i class="fa fa-send"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getChatWithUser(recipientId, recipientName) {
+        $('#sender').val('@sender');
+        $('#recipient').val(recipientId);
+        $('#selectedChat').text(recipientName);
+
+        $('#chatMessageContainer').empty();
+        var _url = 'Chat/GetChat';
+        $.post(_url,
+            {
+                senderId: $('#sender').val(),
+                recipientId: $('#recipient').val()
+            },
+            function (data, status) {
+                var json = $.parseJSON(data);
+                $.each(json,function(key,obj){
+                    if (obj.Sender == $('#sender').val()) {
+                        $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data text-right"><span class="message-data-time">' + obj.Created + '</span></div><div class="message other-message float-right">' + obj.Message + ' </div></li>');
+                    }
+                    else
+                    {
+                        $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data"><span class="message-data-time">' + obj.Created + '</span></div><div class="message my-message">' + obj.Message + ' </div></li>');
+                    }
+                    $('#chatPanel').scrollTop($('#chatPanel')[0].scrollHeight);
+                    $('#sendBtn').removeAttr('hidden');
+                });
+            }
+        );
+        //alert(recipientId + '  ' + '@sender');
+    }
+
+    function sendMessage(){
+        var _url = 'Chat/SendMessage';
+        $.post(_url,
+            {
+                senderId: $('#sender').val(),
+                recipientId: $('#recipient').val(),
+                messageText: $('#chatMessage').val()
+            },
+            function (data, status) {
+                if (data != 'Success') {
+                    alert('Произошла непредвиденная ошибка! Обновите страницу!')
+                }
+                else {
+                    $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data text-right"><span class="message-data-time">@DateTime.Now.ToShortTimeString(), @DateTime.Now.ToShortDateString()</span></div><div class="message other-message float-right">' + $('#chatMessage').val() + ' </div></li>');
+                }
+                $('#chatPanel').scrollTop($('#chatPanel')[0].scrollHeight);
+            }
+        );
+    }
+</script>
+@*
+<li class="clearfix">
+    <div class="message-data text-right">
+        <span class="message-data-time">10:10 AM, Today</span>
+    </div>
+    <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+</li>
+<li class="clearfix">
+    <div class="message-data">
+        <span class="message-data-time">10:12 AM, Today</span>
+    </div>
+    <div class="message my-message">Are we meeting today?</div>
+</li>
+<li class="clearfix">
+    <div class="message-data">
+        <span class="message-data-time">10:15 AM, Today</span>
+    </div>
+    <div class="message my-message">Project has been already finished and I have results to show you.</div>
+</li>*@

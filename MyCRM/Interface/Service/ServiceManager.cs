@@ -11,5 +11,6 @@ namespace MyCRM.Interface.Service
         UserService User { get; }
         TaskStateService TaskStatus { get; }
         RolesService Roles { get; }
+        ChatService Chat { get; }
     }
 }

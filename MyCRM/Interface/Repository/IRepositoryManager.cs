@@ -11,6 +11,7 @@ namespace MyCRM.Interface.Repository
         TaskRepository Tasks { get; }
         TaskStateRepository TaskStatuses { get; }
         UserRepository Users { get; }
+        ChatRepository Chat { get; }
         public void Save();
     }
 }

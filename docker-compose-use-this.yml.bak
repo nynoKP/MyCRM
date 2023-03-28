@@ -27,4 +27,11 @@ services:
       PGDATA: /data/postgres
     ports:
       - "7758:5432"
+    networks:
+      - postgres
     restart: unless-stopped
+    networks:
+      - postgres
+networks:
+  postgres:
+    driver: bridge

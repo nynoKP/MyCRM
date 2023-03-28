@@ -13,6 +13,7 @@ namespace MyCRM.Repository
         private readonly Lazy<TaskRepository> _taskRepository;
         private readonly Lazy<UserRepository> _userRepository;
         private readonly Lazy<TaskStateRepository> _taskStateRepository;
+        private readonly Lazy<ChatRepository> _chatRepository;
 
         public RepositoryManager(ApplicationDbContext context)
         {
@@ -23,6 +24,7 @@ namespace MyCRM.Repository
             _taskRepository = new Lazy<TaskRepository>(() => new TaskRepository(context));
             _userRepository = new Lazy<UserRepository>(() => new UserRepository(context));
             _taskStateRepository = new Lazy<TaskStateRepository>(() => new TaskStateRepository(context));
+            _chatRepository = new Lazy<ChatRepository>(() => new ChatRepository(context));
         }
 
         public ContragentRepository Contragent => _contragentRepository.Value;
@@ -31,6 +33,7 @@ namespace MyCRM.Repository
         public TaskRepository Tasks => _taskRepository.Value;
         public UserRepository Users => _userRepository.Value;
         public TaskStateRepository TaskStatuses => _taskStateRepository.Value;
+        public ChatRepository Chat => _chatRepository.Value;
 
         public void Save() => _context.SaveChanges();
     }

@@ -23,6 +23,7 @@ namespace MyCRM.Data
         public DbSet<Contragent> Contragent { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<TaskState> TaskStatus { get; set; }
+        public DbSet<ChatMessage> ChatMessage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

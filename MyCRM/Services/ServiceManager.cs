@@ -14,6 +14,7 @@ namespace MyCRM.Services
         private readonly Lazy<UserService> _userService;
         private readonly Lazy<TaskStateService> _taskStateService;
         private readonly Lazy<RolesService> _rolesService;
+        private readonly Lazy<ChatService> _chatService;
 
         public ServiceManager(IRepositoryManager repositoryManager, UserManager<CRMUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -24,6 +25,7 @@ namespace MyCRM.Services
             _userService = new Lazy<UserService>(() => new UserService(repositoryManager, userManager, roleManager));
             _taskStateService = new Lazy<TaskStateService>(() => new TaskStateService(repositoryManager));
             _rolesService = new Lazy<RolesService>(() => new RolesService(userManager, roleManager));
+            _chatService = new Lazy<ChatService>(() => new ChatService(repositoryManager));
         }
 
         public ContragentService Contragent => _contragentService.Value;
@@ -33,5 +35,6 @@ namespace MyCRM.Services
         public UserService User => _userService.Value;
         public TaskStateService TaskStatus => _taskStateService.Value;
         public RolesService Roles => _rolesService.Value;
+        public ChatService Chat => _chatService.Value;
     }
 }
