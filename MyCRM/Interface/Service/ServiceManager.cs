@@ -12,5 +12,6 @@ namespace MyCRM.Interface.Service
         TaskStateService TaskStatus { get; }
         RolesService Roles { get; }
         ChatService Chat { get; }
+        IBufferedFileUploadService UploadService { get; }
     }
 }

@@ -193,6 +193,18 @@
                             </li>
                         }
                         
+                        @if (User.IsInRole("IndexChat") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Chat" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-newspaper"></i>
+                                    <p>
+                                        Чат
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
                         @if (User.IsInRole("IndexContragent") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">

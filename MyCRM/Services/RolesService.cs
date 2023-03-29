@@ -39,8 +39,18 @@ namespace MyCRM.Services
             foreach (var item in controlleractionlist)
             {
                 var apiName = item.Action + item.Controller.Replace("Controller","");
-                roleManager.CreateAsync(new IdentityRole(apiName)).Wait();
+                if(!IsRoleInBlacklist(apiName))
+                {
+                    roleManager.CreateAsync(new IdentityRole(apiName)).Wait();
+                }
             }
+        }
+
+        private bool IsRoleInBlacklist(string roleName)
+        {
+            var blacklist = "SendMessageChat,GetChatChat";
+            if(blacklist.Contains(roleName)) return true;
+            return false;
         }
     }
 }

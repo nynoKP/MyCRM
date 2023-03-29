@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Hosting;
 using MyCRM.Data;
 using MyCRM.Interface.Service;
 using MyCRM.Models;
@@ -32,6 +33,13 @@ namespace MyCRM.Controllers
             return View(_service.User.GetById(id));
         }
 
+        [Authorize(Roles = "Admin,EditUser")]
+        public async Task<IActionResult> UpdateAvatar(IFormFile file)
+        {
+            await _service.UploadService.UploadFile(file);
+            return RedirectToAction("Edit");
+        }
+
         [Authorize(Roles = "Admin,IndexUser")]
         public IActionResult Index()
         {
@@ -39,8 +47,15 @@ namespace MyCRM.Controllers
         }
 
         [Authorize(Roles = "Admin,UpdateUser")]
-        public IActionResult Update(CRMUser user)
+        public async Task<IActionResult> Update(CRMUser user, IFormFile file)
         {
+            if(file != null && await _service.UploadService.UploadFile(file))
+            {
+                string filePath = $"UploadedFiles/{file.FileName}";
+                user.AvatarPath = filePath;
+                _service.User.Update(user, true);
+                return RedirectToAction("Index", "News");
+            }
             _service.User.Update(user);
             return RedirectToAction("Index", "News");
         }

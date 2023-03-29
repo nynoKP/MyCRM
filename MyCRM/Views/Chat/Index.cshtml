@@ -10,10 +10,10 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 <link href="~/css/myChat.css" rel="stylesheet" />
 
-<div class="container">
+<div class="container" style="max-width: 2500px;">
     <div class="row clearfix">
         <div class="col-lg-12">
-            <div class="card chat-app">
+            <div class="card chat-app" style="margin-top: 30px;">
                 <input type="text" id="sender" hidden>
                 <input type="text" id="recipient" hidden>
                 <div id="plist" class="people-list">
@@ -29,6 +29,7 @@
                             if (user.Id != sender)
                             {
                                 <li class="clearfix" onclick="getChatWithUser('@user.Id','@user.GetShortName()','@sender')">
+                                    <img src="~/@user.AvatarPath" id="avatarImage" alt="Avatar">
                                     <div class="about">
                                         <div class="name">@user.GetShortName()</div>
                                     </div>
@@ -56,7 +57,7 @@
                     </div>
                     <div class="chat-message clearfix" id="sendBtn" hidden>
                         <div class="input-group mb-0">
-                            <input type="text" id="chatMessage" class="form-control" placeholder="Enter text here...">
+                            <textarea type="text" id="chatMessage" class="form-control" placeholder="Enter text here..." style="white-space: pre-wrap;"></textarea>
                             <div class="btn" onclick="sendMessage()">
                                 <span class="input-group-text"><i class="fa fa-send"></i></span>
                             </div>

@@ -29,7 +29,7 @@ namespace MyCRM.Services
             return _repository.Users.GetById(id);
         }
 
-        public void Update(CRMUser user)
+        public void Update(CRMUser user, bool changeAvatar = false)
         {
             var userFromDb = _userManager.FindByIdAsync(user.Id).Result;
             userFromDb.FirstName = user.FirstName;
@@ -38,6 +38,7 @@ namespace MyCRM.Services
             userFromDb.NormalizedEmail = user.Email.ToUpper();
             userFromDb.Patronymic = user.Patronymic;
             userFromDb.PhoneNumber = user.PhoneNumber;
+            if(changeAvatar ) userFromDb.AvatarPath = user.AvatarPath;
             _repository.Users.Update(userFromDb);
             _repository.Save();
         }

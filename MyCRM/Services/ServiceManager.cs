@@ -15,6 +15,7 @@ namespace MyCRM.Services
         private readonly Lazy<TaskStateService> _taskStateService;
         private readonly Lazy<RolesService> _rolesService;
         private readonly Lazy<ChatService> _chatService;
+        private readonly Lazy<IBufferedFileUploadService> _fileUploadService;
 
         public ServiceManager(IRepositoryManager repositoryManager, UserManager<CRMUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -26,6 +27,7 @@ namespace MyCRM.Services
             _taskStateService = new Lazy<TaskStateService>(() => new TaskStateService(repositoryManager));
             _rolesService = new Lazy<RolesService>(() => new RolesService(userManager, roleManager));
             _chatService = new Lazy<ChatService>(() => new ChatService(repositoryManager));
+            _fileUploadService = new Lazy<IBufferedFileUploadService>(() => new BufferedFileUploadLocalService());
         }
 
         public ContragentService Contragent => _contragentService.Value;
@@ -36,5 +38,6 @@ namespace MyCRM.Services
         public TaskStateService TaskStatus => _taskStateService.Value;
         public RolesService Roles => _rolesService.Value;
         public ChatService Chat => _chatService.Value;
+        public IBufferedFileUploadService UploadService => _fileUploadService.Value;
     }
 }

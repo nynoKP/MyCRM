@@ -11,7 +11,9 @@
 {
     <li class="nav-item">
         <a class="nav-link" asp-controller="User" asp-action="Watch" asp-route-id="@user?.Id">
-            <i class="nav-icon fas fa-user"></i>
+            <div class="image" style="display: inline-block;">
+                <img src="~/@user.AvatarPath" class="img-circle elevation-2" alt="User Image" style="width: 30px;">
+            </div>
             <p>
                 @(user?.GetShortName())
             </p>

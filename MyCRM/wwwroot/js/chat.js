@@ -76,9 +76,9 @@ function sendMessage() {
 
 
 function rightMessage(created, message) {
-    $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data text-right"><span class="message-data-time">' + created + '</span></div><div class="message other-message float-right">' + message + ' </div></li>');
+    $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data text-right"><span class="message-data-time">' + created + '</span></div><div class="message other-message float-right"><span style="white-space: pre-wrap !important;">' + message + '</span></div></li>');
 }
 
 function leftMessage(created, message) {
-    $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data"><span class="message-data-time">' + created + '</span></div><div class="message my-message">' + message + ' </div></li>');
+    $('#chatMessageContainer').append('<li class="clearfix"><div class="message-data"><span class="message-data-time">' + created + '</span></div><div class="message my-message"><span style="white-space: pre-wrap !important;">' + message + '</span></div></li>');
 }

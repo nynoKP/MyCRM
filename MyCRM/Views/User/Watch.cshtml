@@ -14,6 +14,9 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="toCenter">
+                    <img src="~/@Model.AvatarPath" id="avatarImage" alt="Avatar" class="avatar">
+                </div>
                 <table class="table table-striped">
                     <tr>
                         <th><label class="form-label">Фамилия:</label></th>
@@ -51,3 +54,19 @@
         </div>
     </div>
 </section>
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .toCenter{
+        margin: auto;
+        display: table;
+        margin-bottom: 20px;
+    }
+</style>
