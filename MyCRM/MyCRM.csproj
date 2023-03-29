@@ -32,6 +32,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="wwwroot\plugins\dndtest\" />
+    <Folder Include="wwwroot\UploadedFiles\" />
   </ItemGroup>
 
 </Project>
