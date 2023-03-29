@@ -11,12 +11,13 @@ var datetime = currentdate.getHours() + ":"
 
 connection.on("ReceiveMessage", function (sender, recipient, message) {
 
-    if (recipient == $('#sender').val()) {
+    if (sender == $('#sender').val() && recipient == $('#recipient').val()) {
         rightMessage(datetime, message);
     }
-    else {
+    if (recipient == $('#sender').val() && sender == $('#recipient').val()) {
         leftMessage(datetime, message);
     }
+    $('#chatPanel').scrollTop($('#chatPanel')[0].scrollHeight);
 });
 
 connection.start().then(function () {}).catch(function (err) {
@@ -66,13 +67,9 @@ function sendMessage() {
             messageText: $('#chatMessage').val()
         },
         function (data, status) {
-            if (data != 'Success') {
-                alert('Произошла непредвиденная ошибка! Обновите страницу!')
-            }
-            else {
-                rightMessage(datetime, $('#chatMessage').val());
-            }
+            rightMessage(data, $('#chatMessage').val());
             $('#chatPanel').scrollTop($('#chatPanel')[0].scrollHeight);
+            $('#chatMessage').val('');
         }
     );
 }

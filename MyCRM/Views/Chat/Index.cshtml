@@ -26,11 +26,14 @@
                     <ul class="list-unstyled chat-list mt-2 mb-0">
                         @foreach(var user in Model)
                         {
-                            <li class="clearfix" onclick="getChatWithUser('@user.Id','@user.GetShortName()','@sender')">
-                                <div class="about">
-                                    <div class="name">@user.GetShortName()</div>
-                                </div>
-                            </li>
+                            if (user.Id != sender)
+                            {
+                                <li class="clearfix" onclick="getChatWithUser('@user.Id','@user.GetShortName()','@sender')">
+                                    <div class="about">
+                                        <div class="name">@user.GetShortName()</div>
+                                    </div>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>

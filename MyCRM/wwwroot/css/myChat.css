@@ -129,7 +129,8 @@
         font-size: 16px;
         border-radius: 7px;
         display: inline-block;
-        position: relative
+        position: relative;
+        max-width: 70%
     }
 
         .chat .chat-history .message:after {

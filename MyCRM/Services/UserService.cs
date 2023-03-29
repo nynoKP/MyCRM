@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MyCRM.Interface.Repository;
 using MyCRM.Models;
 using MyCRM.ViewModels;
+using System.Reflection;
 
 namespace MyCRM.Services
 {
@@ -58,10 +60,30 @@ namespace MyCRM.Services
         public EditUserRolesViewModel GetEditRolesView(string userId)
         {
             var user = _userManager.FindByIdAsync(userId).Result;
+            var allRoles = _roleManager.Roles.ToList();
+            
+            var gropedRoles = new List<(string,IEnumerable<IdentityRole>)>();
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+            var controllerNames = asm.GetTypes()
+                .Where(type => typeof(Controller).IsAssignableFrom(type))
+                .Select(c => c.Name.Replace("Controller", "")).ToList();
+
+            foreach(var controllerName in controllerNames)
+            {
+                if(allRoles.Where(c => c.Name.EndsWith(controllerName)).Any())
+                    gropedRoles.Add((controllerName, allRoles.Where(c=>c.Name.EndsWith(controllerName))));
+            }
+
+            var groupedRoeles = gropedRoles.SelectMany(c => c.Item2).ToList();
+            var anyRoles = allRoles.Except(groupedRoeles);
+
+            gropedRoles.Add(("Any", anyRoles));
+
             return new EditUserRolesViewModel
             {
                 User = user,
-                AllRoles = _roleManager.Roles.ToList(),
+                AllRoles = gropedRoles,
                 UserRoles = _userManager.GetRolesAsync(user).Result
             };
         }

@@ -11,9 +11,10 @@ namespace MyCRM.Hubs
 
         public async Task SendMessage(string senderId, string recipientId, string message)
         {
-            var userName = manager.FindByIdAsync(recipientId).Result?.UserName;
-            //await Clients.All.SendAsync("ReceiveMessage", senderId, recipientId, message);
-            await Clients.User(userName ?? "").SendAsync("ReceiveMessage", senderId, recipientId, message);
+            
+            var userName = manager.FindByIdAsync(recipientId).Result?.Id;
+            var created = DateTime.Now.ToShortTimeString() + ", " + DateTime.Now.ToShortDateString();
+            await Clients.User(userName ?? "").SendAsync("ReceiveMessage", senderId, recipientId, message, created);
         }
     }
 }
