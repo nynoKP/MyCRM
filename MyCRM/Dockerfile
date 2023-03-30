@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["MyCRM/MyCRM.csproj", "MyCRM/"]
-RUN dotnet restore "MyCRM/MyCRM.csproj"
+RUN dotnet restore "MyCRM/MyCRM.csproj" -s "https://nexus.anorbank.uz/repository/nuget.org-proxy/index.json"
 COPY . .
 WORKDIR "/src/MyCRM"
 RUN dotnet build "MyCRM.csproj" -c Release -o /app/build

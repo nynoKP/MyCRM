@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=192.168.110.15;Port=5432;Database=MyCRM;User Id=admen;Password=admen123;"
+    "DefaultConnection": "Server=localhost;Port=5432;Database=MyCRM;User Id=admen;Password=admen123;"
   },
   "Logging": {
     "LogLevel": {
